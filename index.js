@@ -6,26 +6,26 @@ const empty = {
     found: false
 };
 
+// List of selected ticker data
 let tickerList = [
     {...empty}
 ];
 
 // Update the ticker list with newly input data
 const changeTicker = async (index, numShares, ticker) => {
+    // Only assign new values if they are not null
     if (numShares !== null) tickerList[index].numShares = numShares;
     if (ticker !== null) {
         tickerList[index].ticker = ticker.toUpperCase();
 
-
-        // THIS IS RETURNING RES AS UNDEFINED FOR SOME WEIRD REASON
+        // Get the ticker data then update the local data
         getTickerData(ticker.toUpperCase()).then((res) => {
             tickerList[index].yieldAmount = res.yieldAmount;
             tickerList[index].found = res.found;
+            // Update visual after data is stored
             updateTickers();
         });
     }
-    /*  give the <li>'s a little red icon to notify if a ticker can't be found
-        and ignore those ones from the calculations*/
 }
 
 // Remove a ticker from the list and update the visual
@@ -91,8 +91,6 @@ const updateOutput = () => {
             );
     }, 0);
 
-    console.log(total);
-
     // Update text
     document.getElementById("year")
         .firstElementChild.innerHTML = `
@@ -125,7 +123,7 @@ const updateOutput = () => {
 
 // ~~~ API Section ~~~
 
-let url = "http://127.0.0.1:9001/hello?ticker="
+let url = "http://127.0.0.1:3000/hello?ticker="
 
 const getTickerData = async (ticker) => {
     let tickerPath = url + ticker;
