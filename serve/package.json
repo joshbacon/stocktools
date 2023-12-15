@@ -1,0 +1,18 @@
+{
+  "name": "div-server",
+  "version": "1.0.0",
+  "description": "fetch ticker data and return it",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Josh Bacon",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "yahoo-finance2": "^2.9.0"
+  }
+}

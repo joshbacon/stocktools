@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script rel="preconnect" src="index.js" defer></script>
+    <title>Dividend Calculator</title>
+</head>
+<body>
+    <div class="content">
+        <div class="ticker-list">
+            <h2 class="title">I have:</h2>
+            <ul id="list">
+                <li key="0">
+                    <div>
+                        <input type="number" min="0" placeholder="35" onchange="changeTicker(0, this.value, null);">
+                        <p> shares of </p>
+                        <input type="text" placeholder="ENB.TO" onchange="changeTicker(0, null, this.value);">
+                    </div>
+                    <div>
+                        <p>at</p>
+                        <p id="amount">$0.00</p>
+                        <p>a share / year</p>
+                        <button onclick="removeTicker(0);"><i class="fa fa-trash"></i></button>
+                    </div>
+                </li>
+            </ul>
+            <div class="buttons">
+                <button onclick="addTicker();"><i class="fa fa-plus"></i></button>
+                <button onclick="updateOutput();"><h2>Update</h2></button>
+            </div>
+        </div>
+        <div class="output">
+            <h2 class="title">I make:</h2>
+            <div class="out-section" id="year">
+                <h1>$999.99</h1>
+                <h2> / year</h2>
+            </div>
+            <div class="out-section" id="quarter">
+                <h1>$249.99</h1>
+                <h2> / quarter</h2>
+            </div>
+            <div class="out-section" id="month">
+                <h1>$87.49</h1>
+                <h2> / month</h2>
+            </div>
+            <div class="out-section" id="day">
+                <h1>$3.87</h1>
+                <h2> / day</h2>
+            </div>
+            <div class="out-section" id="minute">
+                <h1>$0.81</h1>
+                <h2> / minute</h2>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
