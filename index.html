@@ -12,27 +12,27 @@
     <title>Dividend Calculator</title>
 </head>
 <body>
-    <div class="content">
+    <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator mini">
         <div class="ticker-list">
             <h2 class="title">I have:</h2>
             <ul id="list">
                 <li key="0">
                     <div>
-                        <input type="number" min="0" placeholder="35" onchange="changeTicker(0, this.value, null);">
+                        <input type="number" min="0" placeholder="35" onchange="changeTicker(0, this.value, null)">
                         <p> shares of </p>
-                        <input type="text" placeholder="ENB.TO" onchange="changeTicker(0, null, this.value);">
+                        <input type="text" placeholder="ENB.TO" onchange="changeTicker(0, null, this.value)">
                     </div>
                     <div>
                         <p>at</p>
                         <p id="amount">$0.00</p>
                         <p>a share / year</p>
-                        <button onclick="removeTicker(0);"><i class="fa fa-trash"></i></button>
+                        <button onclick="removeTicker(0)"><i class="fa fa-trash"></i></button>
                     </div>
                 </li>
             </ul>
             <div class="buttons">
-                <button onclick="addTicker();"><i class="fa fa-plus"></i></button>
-                <button onclick="updateOutput();"><h2>Update</h2></button>
+                <button onclick="addTicker()"><i class="fa fa-plus"></i></button>
+                <button onclick="updateOutput()"><h2>Update</h2></button>
             </div>
         </div>
         <div class="output">
@@ -58,6 +58,62 @@
                 <h2> / minute</h2>
             </div>
         </div>
+    </div>
+    <div onclick="select('option-breakeven')" id="content" class="selected option-breakeven">
+        <h1>Option Break-even Calculator</h1>
+
+        <div class="fee-info">
+            <p>Flat Brokerage Fees</p>
+            <input onchange="updateFlat(this.value)" type="number" placeholder="6.95">
+    
+            <p>Per Contract Brokerage Fees</p>
+            <input onchange="updatePer(this.value)" type="number" placeholder="1.25">
+        </div>
+
+        <div class="buy-info">
+            <p># of Contracts Bought</p>
+            <input onchange="updateContracts(this.value)" type="number" placeholder="5">
+    
+            <p>Premium per Share (divide single contract price by 100)</p>
+            <input onchange="updatePremium(this.value)" type="number" placeholder="0.15">
+        </div>
+
+        <div class="option-output">
+            <div>
+                <h3>Break-even Premium Increase</h3>
+                <h2 id="increase-text">$0.05280</h2>
+            </div>
+    
+            <div>
+                <h3>Break-even Premium Price</h3>
+                <h2 id="premium-text">$0.20280</h2>
+            </div>
+        </div>
+
+        <button onclick="calculate()">
+            <h2>Calculate</h2>
+        </button>
+
+        <div class="option-profit">
+            <h2>Profit Calculator</h2>
+
+            <div class="row">
+                <h4>Desired sale premium</h4>
+                <input onchange="updateGoal(this.value)" type="number" placeholder="0.30">
+            </div>
+
+            <button onclick="checkGoal()">
+                <h2>Calculate</h2>
+            </button>
+
+            <h3 id="goal-output"></h3>
+            <h2 id="goal-amount"></h2>
+            <h3 id="goal-check"></h3>
+            <!-- /* figure out the percent return also */ -->
+            <!-- /* have a title showing when a section is minified (will need a better way anyway when more tools are added) */ -->
+        </div>
+
+        <h3 id="math-check"></h3>
     </div>
 </body>
 </html>

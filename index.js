@@ -1,3 +1,36 @@
+
+// Section Switching Section
+
+let currSection = 'option-breakeven';
+
+const sections = [
+    'dividend-calculator',
+    'option-breakeven'
+]
+
+const select = (newSection) => {
+    // kick out if re-selecting the current section
+    if (newSection === currSection) return;
+
+    let currSec = document.getElementsByClassName(currSection)[0];
+    // remove selected from currSelection and add mini
+    currSec.classList.add('mini');
+    if (currSec.classList.contains('selected'))
+        currSec.classList.remove('selected');
+
+    let newSec = document.getElementsByClassName(newSection)[0];
+    // replace mini with selected in the newSelection
+    newSec.classList.add('selected');
+    if (newSec.classList.contains('mini'))
+        newSec.classList.remove('mini');
+
+    currSection = newSection;
+}
+
+
+// Dividend Income Calculator Section //
+
+
 // Empty ticker data object
 const empty = {
     ticker: "",
@@ -131,4 +164,78 @@ const getTickerData = async (ticker) => {
         .then(response => response.json())
         .then(json => json);
     return data;
+}
+
+
+
+// Option Break-even Calculator Section //
+
+let flatFees = 6.95;
+let perFees = 1.25;
+
+let numContracts = 5;
+let premium = 0.15;
+
+let totalFees = (flatFees + (perFees * numContracts)) * 2;
+let increase = totalFees / (numContracts * 100);
+let breakeven = parseFloat(premium) + increase;
+
+let goal = 0.30;
+
+const updateFlat = (newAmount) => {
+    if (newAmount >= 0)
+        flatFees = parseFloat(newAmount);
+}
+
+const updatePer = (newAmount) => {
+    if (newAmount >= 0)
+        perFees = parseFloat(newAmount);
+}
+
+const updateContracts = (newAmount) => {
+    if (newAmount >= 0)
+        numContracts = Math.round(newAmount);
+
+}
+
+const updatePremium = (newAmount) => {
+    if (newAmount >= 0)
+        premium = parseFloat(newAmount);
+}
+
+const updateGoal = (newAmount) => {
+    if (newAmount >= 0)
+        goal = parseFloat(newAmount);
+}
+
+const calculate = () => {
+    totalFees = (flatFees + (perFees * numContracts)) * 2;
+
+    // set the increase amount to the text in the option-output div
+    increase = totalFees / (numContracts * 100);
+    document.getElementById("increase-text").innerHTML = `$${increase.toFixed(5)}`
+
+    // set the premium amount to the text in the option-output div
+    breakeven = parseFloat(premium) + increase;
+    document.getElementById("premium-text").innerHTML = `$${breakeven.toFixed(5)}`
+
+    document.getElementById("math-check").innerHTML = `
+        ${numContracts} contracts represents ${numContracts * 100} shares.<br>
+        A premium of $${breakeven.toFixed(5)}, multiplied by ${numContracts * 100} shares, is worth $${(breakeven * numContracts * 100).toFixed(2)}.<br><br>
+        It costs $${parseFloat(flatFees + (perFees * numContracts)).toFixed(2)} in fees to buy and sell this contract, $${((flatFees + (perFees * numContracts)) * 2).toFixed(2)} in total.<br>
+        Having bought at a premium of $${premium}, the total cost for this trade is $${(((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100)).toFixed(2)}.
+    `
+}
+
+const checkGoal = () => {
+    let profit = (goal - breakeven) * numContracts * 100;
+
+    document.getElementById("goal-output").innerHTML = `
+        Selling ${numContracts} contracts at a premium of $${goal} would earn you
+    `;
+    document.getElementById("goal-amount").innerHTML = `$${profit.toFixed(2)}`;
+    document.getElementById("goal-check").innerHTML = `
+        $${goal.toFixed(2)} - $${breakeven.toFixed(5)} = $${(goal - breakeven).toFixed(3)} per share per contract<br>
+        $${(goal - breakeven).toFixed(3)} x ${numContracts} contracts x 100 shares per contract = $${profit.toFixed(2)}
+    `;
 }

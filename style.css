@@ -23,9 +23,12 @@
 
 body {
     background-color: #6C00A2;
-    height: 100vh;
-    display: grid;
-    place-items: center;
+    width: calc(100vw - 4rem);
+    height: calc(100vh - 4rem);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     font-family: 'Noto Sans JP', sans-serif;
 }
 
@@ -89,7 +92,14 @@ input::placeholder {
     text-align: center;
 }
 
-.content {
+#content {
+    transition: all 0.8s;
+}
+
+
+/* Dividend Calculator Specific */
+
+.dividend-calculator {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
@@ -142,7 +152,6 @@ input::placeholder {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: left;
     justify-content: space-evenly;
     background-color: #5c018a;
     border-radius: 0 1vmin 1vmin 0;
@@ -163,7 +172,7 @@ input::placeholder {
 }
 
 @media screen and (max-width: 1250px) {
-    .content {
+    .dividend-calculator {
         grid-template-columns: 1fr;
     }
 
@@ -185,4 +194,130 @@ input::placeholder {
     ul {
         gap: 2vmin;
     }
+}
+
+
+/* Option Breakeven Section */
+
+
+
+
+
+
+
+
+/* Now make it responsize */
+
+
+
+
+
+
+.option-breakeven {
+    color: #f5f5f5;
+    padding: 2rem;
+    background-color: #413942;
+    border-radius: 1rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+}
+
+.option-breakeven h1 {
+    grid-column: 1 / span 2;
+}
+
+.option-breakeven input {
+    padding: 5px;
+    background-color: #5c018a;
+    color: #f5f5f5;
+}
+
+.fee-info,
+.buy-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.option-output {
+    grid-column: 1 / span 2;
+    width: 100%;
+    gap: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.option-output div {
+    padding: 1rem;
+    background-color: #413942;
+    border-radius: 15px;
+}
+
+.option-output h2 {
+    color: #5eb111;
+}
+
+.option-breakeven button {
+    width: clamp(150px, 50%, 200px);
+    padding: 1rem 2rem;
+    text-align: center;
+    grid-column: 1 / span 2;
+    box-shadow: none;
+}
+
+.option-profit {
+    width: 100%;
+    background-color: #6C00A27F;
+    border-radius: 15px;
+    display: grid;
+    gap: 1rem;
+    place-items: center;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.option-profit h2,
+.option-profit h3 {
+    grid-column: 1 / span 2;
+    text-align: center;
+}
+
+.option-profit input {
+    background: #413942;
+}
+
+.row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    grid-column: 1 / span 2;
+}
+
+#goal-amount {
+    color: #5eb111;
+}
+
+/* Section Selection Stuff */
+
+.selected {
+    width: 80%;
+}
+
+.mini {
+    width: 10%;
+    height: 90%;
+    background-color: #2b262c;
+    border-radius: 15px;
+    cursor: pointer;
+    padding: 0;
+}
+.mini * {
+    display: none;
+}
+.mini > * {
+    display: none;
 }
