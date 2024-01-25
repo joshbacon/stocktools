@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <script rel="preconnect" src="index.js" defer></script>
-    <title>Dividend Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="icon.ico">
+    <title>Stock Tools</title>
 </head>
 <body>
-    <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator mini">
+    <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator selected">
         <div class="ticker-list">
             <h2 class="title">I have:</h2>
             <ul id="list">
@@ -59,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div onclick="select('option-breakeven')" id="content" class="selected option-breakeven">
+    <div onclick="select('option-breakeven')" id="content" class="option-breakeven mini">
         <h1>Option Break-even Calculator</h1>
 
         <div class="fee-info">

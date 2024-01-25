@@ -1,12 +1,12 @@
 
 // Section Switching Section
 
-let currSection = 'option-breakeven';
-
 const sections = [
     'dividend-calculator',
     'option-breakeven'
-]
+];
+
+let currSection = sections[0];
 
 const select = (newSection) => {
     // kick out if re-selecting the current section
