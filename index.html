@@ -12,6 +12,7 @@
 </head>
 <body>
     <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator selected">
+        <h2 class="small-title">Dividend Calculator</h2>
         <div class="ticker-list">
             <h2 class="title">I have:</h2>
             <ul id="list">
@@ -59,6 +60,7 @@
         </div>
     </div>
     <div onclick="select('option-breakeven')" id="content" class="option-breakeven mini">
+        <h2 class="small-title">Option Calculator</h2>
         <h1>Option Break-even Calculator</h1>
 
         <div class="fee-info">
@@ -73,7 +75,7 @@
             <p># of Contracts Bought</p>
             <input onchange="updateContracts(this.value)" type="number" placeholder="5">
     
-            <p>Premium per Share (divide single contract price by 100)</p>
+            <p>Premium per Share<br>(divide single contract price by 100)</p>
             <input onchange="updatePremium(this.value)" type="number" placeholder="0.15">
         </div>
 
@@ -108,8 +110,6 @@
             <h3 id="goal-output"></h3>
             <h2 id="goal-amount"></h2>
             <h3 id="goal-check"></h3>
-            <!-- /* figure out the percent return also */ -->
-            <!-- /* have a title showing when a section is minified (will need a better way anyway when more tools are added) */ -->
         </div>
 
         <h3 id="math-check"></h3>

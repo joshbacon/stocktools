@@ -46,6 +46,7 @@ let tickerList = [
 
 // Update the ticker list with newly input data
 const changeTicker = async (index, numShares, ticker) => {
+
     // Only assign new values if they are not null
     if (numShares !== null) tickerList[index].numShares = numShares;
     if (ticker !== null) {
@@ -211,17 +212,17 @@ const updateGoal = (newAmount) => {
 const calculate = () => {
     totalFees = (flatFees + (perFees * numContracts)) * 2;
 
-    // set the increase amount to the text in the option-output div
+    // Set the increase amount to the text in the option-output div
     increase = totalFees / (numContracts * 100);
     document.getElementById("increase-text").innerHTML = `$${increase.toFixed(5)}`
 
-    // set the premium amount to the text in the option-output div
+    // Set the premium amount to the text in the option-output div
     breakeven = parseFloat(premium) + increase;
     document.getElementById("premium-text").innerHTML = `$${breakeven.toFixed(5)}`
 
     document.getElementById("math-check").innerHTML = `
         ${numContracts} contracts represents ${numContracts * 100} shares.<br>
-        A premium of $${breakeven.toFixed(5)}, multiplied by ${numContracts * 100} shares, is worth $${(breakeven * numContracts * 100).toFixed(2)}.<br><br>
+        The breakeven premium of $${breakeven.toFixed(5)}, multiplied by ${numContracts * 100} shares, is worth $${(breakeven * numContracts * 100).toFixed(2)}.<br><br>
         It costs $${parseFloat(flatFees + (perFees * numContracts)).toFixed(2)} in fees to buy and sell this contract, $${((flatFees + (perFees * numContracts)) * 2).toFixed(2)} in total.<br>
         Having bought at a premium of $${premium}, the total cost for this trade is $${(((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100)).toFixed(2)}.
     `
@@ -229,13 +230,22 @@ const calculate = () => {
 
 const checkGoal = () => {
     let profit = (goal - breakeven) * numContracts * 100;
+    
+    // Calculate percent return
+    let total = (((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100));
+    let percent = (((total + profit) / total) - 1) * 100;
 
+    // Update the html
     document.getElementById("goal-output").innerHTML = `
         Selling ${numContracts} contracts at a premium of $${goal} would earn you
     `;
-    document.getElementById("goal-amount").innerHTML = `$${profit.toFixed(2)}`;
+    document.getElementById("goal-amount").innerHTML = `$${profit.toFixed(2)}<br>${percent.toFixed(2)}%`;
+    document.getElementById("goal-amount").classList.remove('positive');
+    document.getElementById("goal-amount").classList.remove('negative');
+    document.getElementById("goal-amount").classList.add(profit >= 0 ? 'positive' : 'negative')
     document.getElementById("goal-check").innerHTML = `
         $${goal.toFixed(2)} - $${breakeven.toFixed(5)} = $${(goal - breakeven).toFixed(3)} per share per contract<br>
         $${(goal - breakeven).toFixed(3)} x ${numContracts} contracts x 100 shares per contract = $${profit.toFixed(2)}
     `;
+
 }

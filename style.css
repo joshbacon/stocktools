@@ -23,13 +23,15 @@
 
 body {
     background-color: #6C00A2;
-    width: calc(100vw - 4rem);
-    height: calc(100vh - 4rem);
-    padding: 2rem;
+    width: 100vw;
+    height: 100vh;
     display: flex;
+    gap: 2rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
     font-family: 'Noto Sans JP', sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 ul {
@@ -103,6 +105,7 @@ input::placeholder {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
+    color: #f5f5f5;
 }
 
 .ticker-list {
@@ -116,7 +119,6 @@ input::placeholder {
     padding: 3vmin;
     gap: 2vmin;
     border-radius: 1vmin;
-    color: #f5f5f5;
     background-color: #2b262c;
 
     /* transform: translateX(50%); */
@@ -199,20 +201,6 @@ input::placeholder {
 
 /* Option Breakeven Section */
 
-
-
-
-
-
-
-
-/* Now make it responsize */
-
-
-
-
-
-
 .option-breakeven {
     color: #f5f5f5;
     padding: 2rem;
@@ -222,6 +210,7 @@ input::placeholder {
     gap: 1rem;
     grid-template-columns: repeat(2, 1fr);
     place-items: center;
+    overflow-y: auto;
 }
 
 .option-breakeven h1 {
@@ -244,7 +233,7 @@ input::placeholder {
 .option-output {
     grid-column: 1 / span 2;
     width: 100%;
-    gap: 5rem;
+    /* gap: 5rem; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -297,14 +286,32 @@ input::placeholder {
     grid-column: 1 / span 2;
 }
 
-#goal-amount {
+.positive {
     color: #5eb111;
+}
+
+.negative {
+    color: #d10000;
+}
+
+#math-check {
+    text-align: center;
 }
 
 /* Section Selection Stuff */
 
+.small-title {
+    text-align: center;
+    transform: rotate(90deg);
+}
+
 .selected {
     width: 80%;
+    /* height: 80%; */
+}
+
+.selected .small-title {
+    display: none;
 }
 
 .mini {
@@ -314,10 +321,44 @@ input::placeholder {
     border-radius: 15px;
     cursor: pointer;
     padding: 0;
+    grid-template-columns: 1fr;
 }
 .mini * {
     display: none;
 }
 .mini > * {
     display: none;
+}
+
+.mini .small-title {
+    display: flex;
+}
+
+@media screen and (max-width: 700px) {
+    .option-breakeven {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+@media screen and (max-width: 1000px) {
+    body {
+        flex-direction: column;
+    }
+
+    .selected {
+        height: 80%;
+    }
+
+    .mini {
+        width: 90%;
+        height: 10%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .small-title {
+        transform: rotate(0deg);
+    }
 }
