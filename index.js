@@ -269,15 +269,15 @@ const checkLimit = () => {
     // Cost per contract is the premium plust the per contract fee to enter and exit
     let numContracts = Math.floor(workingLimit / (limitPremium*100 + perFees*2));
     document.getElementById("limit-amount").innerHTML = `${numContracts}`;
-    document.getElementById("limit-premium").innerHTML = `$${limitPremium}`;
+    document.getElementById("limit-premium").innerHTML = `$${limitPremium.toFixed(2)}`;
     // Find the total cost of the premiums
     let premiumCost = numContracts * limitPremium * 100;
-    document.getElementById("limit-premium-cost").innerHTML = `$${premiumCost}`;
+    document.getElementById("limit-premium-cost").innerHTML = `$${premiumCost.toFixed(2)}`;
     // Find the one time fees (paid twice, once to open and once to close)
     let feeCost = flatFees + (numContracts*perFees);
-    document.getElementById("limit-fee-cost").innerHTML = `$${feeCost}`;
-    document.getElementById("limit-exit").innerHTML = `$${feeCost}`;
-    document.getElementById("limit-entry").innerHTML = `$${feeCost + premiumCost}`;
+    document.getElementById("limit-fee-cost").innerHTML = `$${feeCost.toFixed(2)}`;
+    document.getElementById("limit-exit").innerHTML = `$${feeCost.toFixed(2)}`;
+    document.getElementById("limit-entry").innerHTML = `$${(feeCost + premiumCost).toFixed(2)}`;
     // Add it all up for a total trade cost
     let total = premiumCost + feeCost*2;
     document.getElementById("limit-total").innerHTML = `$${total.toFixed(2)}`;
