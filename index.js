@@ -253,6 +253,16 @@ const checkGoal = () => {
 
 }
 
+const updateLimitAmount = (newAmount) => {
+    if (newAmount > 0)
+    limit = newAmount;
+}
+
+const updateLimitPremium = (newAmount) => {
+    if (newAmount > 0)
+        limitPremium = newAmount;
+}
+
 const checkLimit = () => {
     // Find a working limit by taking away the flat fees
     let workingLimit = limit - flatFees*2;

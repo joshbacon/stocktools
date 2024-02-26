@@ -105,9 +105,9 @@
         <h3 id="math-check"></h3>
         <div class="limit-calc">
             <h2>How many contracts can I buy with</h2>
-            <input onchange="foo(this.value)" type="number" placeholder="100">
+            <input onchange="updateLimitAmount(this.value)" type="number" placeholder="100">
             <h3>at a premium of</h3>
-            <input onchange="foo(this.value)" type="number" placeholder="0.15">
+            <input onchange="updateLimitPremium(this.value)" type="number" placeholder="0.15">
             <h3>?</h3>
             <button onclick="checkLimit()">
                 <h2>Calculate</h2>
