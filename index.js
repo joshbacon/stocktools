@@ -72,7 +72,7 @@ const removeTicker = (index) => {
 }
 
 // Empty the ul and re-enter tickers
-// (need to clear so the keys match the indicies)
+// (need to clear so the keys match the indices)
 const updateTickers = () => {
     let list = document.getElementById("list");
     list.innerHTML = '';
@@ -95,7 +95,7 @@ const appendTicker = (index) => {
     document.getElementById("list").appendChild(temp);
 }
 
-// Generates a list item element depening on the given data
+// Generates a list item element depending on the given data
 const generateElem = (index) => {
     return `
         <div>
