@@ -11,7 +11,8 @@
     <title>Stock Tools</title>
 </head>
 <body>
-    <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator selected">
+
+    <div onclick="select('dividend-calculator')"  id="content" class="dividend-calculator mini">
         <h2 class="small-title">Dividend Calculator</h2>
         <div class="ticker-list">
             <h2 class="title">I have:</h2>
@@ -59,60 +60,77 @@
             </div>
         </div>
     </div>
-    <div onclick="select('option-breakeven')" id="content" class="option-breakeven mini">
+
+    <div onclick="select('option-breakeven')" id="content" class="option-breakeven selected">
         <h2 class="small-title">Option Calculator</h2>
         <h1>Option Break-even Calculator</h1>
-
         <div class="fee-info">
             <p>Flat Brokerage Fees</p>
             <input onchange="updateFlat(this.value)" type="number" placeholder="6.95">
-    
             <p>Per Contract Brokerage Fees</p>
             <input onchange="updatePer(this.value)" type="number" placeholder="1.25">
         </div>
-
         <div class="buy-info">
             <p># of Contracts Bought</p>
             <input onchange="updateContracts(this.value)" type="number" placeholder="5">
-    
             <p>Premium per Share<br>(divide single contract price by 100)</p>
             <input onchange="updatePremium(this.value)" type="number" placeholder="0.15">
         </div>
-
         <div class="option-output">
             <div>
                 <h3>Break-even Premium Increase</h3>
                 <h2 id="increase-text">$0.05280</h2>
             </div>
-    
             <div>
                 <h3>Break-even Premium Price</h3>
                 <h2 id="premium-text">$0.20280</h2>
             </div>
         </div>
-
         <button onclick="calculate()">
             <h2>Calculate</h2>
         </button>
-
         <div class="option-profit">
             <h2>Profit Calculator</h2>
-
             <div class="row">
                 <h4>Desired sale premium</h4>
                 <input onchange="updateGoal(this.value)" type="number" placeholder="0.30">
             </div>
-
             <button onclick="checkGoal()">
                 <h2>Calculate</h2>
             </button>
-
             <h3 id="goal-output"></h3>
             <h2 id="goal-amount"></h2>
             <h3 id="goal-check"></h3>
         </div>
-
         <h3 id="math-check"></h3>
+        <div class="limit-calc">
+            <h2>How many contracts can I buy with</h2>
+            <input onchange="foo(this.value)" type="number" placeholder="100">
+            <h3>at a premium of</h3>
+            <input onchange="foo(this.value)" type="number" placeholder="0.15">
+            <h3>?</h3>
+            <button onclick="checkLimit()">
+                <h2>Calculate</h2>
+            </button>
+            <div id="limit-output" class="hidden">
+                <h3>You can buy</h3>
+                <h2 id="limit-amount" class="positive"/>
+                <h3>contracts at</h3>
+                <h2 id="limit-premium" class="positive"></h2>
+                <h3>which would cost</h3>
+                <h2 id="limit-entry" class="positive"></h2>
+                <h3>(</h3>
+                <h2 id="limit-premium-cost" class="positive"/>
+                <h3>in premiums and</h3>
+                <h2 id="limit-fee-cost" class="positive"/>
+                <h3>in fees ). It would cost another</h3>
+                <h2 id="limit-exit" class="positive"/>
+                <h3>to exit the position, giving a total trade cost of</h3>
+                <h2 id="limit-total" class="positive"/>
+                <h3>.</h3>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>

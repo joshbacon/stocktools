@@ -183,6 +183,9 @@ let breakeven = parseFloat(premium) + increase;
 
 let goal = 0.30;
 
+let limit = 100;
+let limitPremium = 0.15;
+
 const updateFlat = (newAmount) => {
     if (newAmount >= 0)
         flatFees = parseFloat(newAmount);
@@ -248,4 +251,25 @@ const checkGoal = () => {
         $${(goal - breakeven).toFixed(3)} x ${numContracts} contracts x 100 shares per contract = $${profit.toFixed(2)}
     `;
 
+}
+
+const checkLimit = () => {
+    // Find a working limit by taking away the flat fees
+    let workingLimit = limit - flatFees*2;
+    // Cost per contract is the premium plust the per contract fee to enter and exit
+    let numContracts = Math.floor(workingLimit / (limitPremium*100 + perFees*2));
+    document.getElementById("limit-amount").innerHTML = `${numContracts}`;
+    document.getElementById("limit-premium").innerHTML = `$${limitPremium}`;
+    // Find the total cost of the premiums
+    let premiumCost = numContracts * limitPremium * 100;
+    document.getElementById("limit-premium-cost").innerHTML = `$${premiumCost}`;
+    // Find the one time fees (paid twice, once to open and once to close)
+    let feeCost = flatFees + (numContracts*perFees);
+    document.getElementById("limit-fee-cost").innerHTML = `$${feeCost}`;
+    document.getElementById("limit-exit").innerHTML = `$${feeCost}`;
+    document.getElementById("limit-entry").innerHTML = `$${feeCost + premiumCost}`;
+    // Add it all up for a total trade cost
+    let total = premiumCost + feeCost*2;
+    document.getElementById("limit-total").innerHTML = `$${total.toFixed(2)}`;
+    document.getElementById("limit-output").classList.remove("hidden");
 }
