@@ -6,7 +6,7 @@ const sections = [
     'option-breakeven'
 ];
 
-let currSection = sections[0];
+let currSection = sections[1];
 
 const select = (newSection) => {
     // kick out if re-selecting the current section
@@ -99,9 +99,22 @@ const appendTicker = (index) => {
 const generateElem = (index) => {
     return `
         <div>
-            <input id="numSharesIn" type="number" min="0"${tickerList[index].numShares !== null ? " value="+tickerList[index].numShares : ''} placeholder="35" onchange="changeTicker(${index}, this.value, null);">
+            <input
+                id="numSharesIn"
+                type="number"
+                min="0"
+                ${tickerList[index].numShares !== null ? " value="+tickerList[index].numShares : ''}
+                placeholder="35"
+                onchange="changeTicker(${index}, this.value, null);"
+            >
             <p> shares of </p>
-            <input id="tickerIn" type="text"${tickerList[index].ticker !== '' ? " value=\"" + tickerList[index].ticker + "\"" : ''} placeholder="ENB.TO" onchange="changeTicker(${index}, null, this.value);">
+            <input
+                id="tickerIn"
+                type="text"
+                ${tickerList[index].ticker !== '' ? "value=\"" + tickerList[index].ticker + "\"" : ''}
+                placeholder="ENB.TO"
+                onchange="changeTicker(${index}, null, this.value);"
+            >
         </div>
         <div>
             <p>at</p>
@@ -125,31 +138,40 @@ const updateOutput = () => {
             );
     }, 0);
 
+    let year = total.toFixed(2);
+    let quarter = (total/4).toFixed(2);
+    let month = (total/12).toFixed(2);
+    let day = (total/365).toFixed(2);
+    let minute = (total/525960).toFixed(2);
+
+    // Save tickers and number of respective shares to local storage
+    localStorage.setItem("tickerList", JSON.stringify(tickerList));
+
     // Update text
     document.getElementById("year")
         .firstElementChild.innerHTML = `
             ${total > 0 ? '' : '> '}
-            $${total.toFixed(2)}
+            $${year}
         `;
     document.getElementById("quarter")
         .firstElementChild.innerHTML = `
             ${total/4 > 0 ? '' : '> '}
-            $${(total/4).toFixed(2)}
+            $${quarter}
         `;
     document.getElementById("month")
         .firstElementChild.innerHTML = `
             ${total/12 > 0 ? '' : '> '}
-            $${(total/12).toFixed(2)}
+            $${month}
         `;
     document.getElementById("day")
         .firstElementChild.innerHTML = `
             ${total/365 > 0 ? '' : '> '}
-            $${(total/365).toFixed(2)}
+            $${day}
         `;
     document.getElementById("minute")
         .firstElementChild.innerHTML = `
             ${total/525960 > 0 ? '' : '> '}
-            $${(total/525960).toFixed(2)}
+            $${minute}
         `;
 }
 
@@ -269,7 +291,7 @@ const checkLimit = () => {
     // Cost per contract is the premium plust the per contract fee to enter and exit
     let numContracts = Math.floor(workingLimit / (limitPremium*100 + perFees*2));
     document.getElementById("limit-amount").innerHTML = `${numContracts}`;
-    document.getElementById("limit-premium").innerHTML = `$${limitPremium.toFixed(2)}`;
+    document.getElementById("limit-premium").innerHTML = `$${limitPremium}`;
     // Find the total cost of the premiums
     let premiumCost = numContracts * limitPremium * 100;
     document.getElementById("limit-premium-cost").innerHTML = `$${premiumCost.toFixed(2)}`;
@@ -282,4 +304,20 @@ const checkLimit = () => {
     let total = premiumCost + feeCost*2;
     document.getElementById("limit-total").innerHTML = `$${total.toFixed(2)}`;
     document.getElementById("limit-output").classList.remove("hidden");
+}
+
+
+// Look for existing ticker and share data, populate it if necessary
+window.onload = () => {
+    tickerList = JSON.parse(localStorage.getItem("tickerList"));
+    if (tickerList){
+        tickerList.forEach((ticker, i) => {
+            changeTicker(i, ticker.numShares, ticker.ticker);
+        });
+    } else {
+        tickerList = [
+            {...empty}
+        ];
+    }
+    console.log(tickerList);
 }
