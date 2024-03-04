@@ -54,6 +54,7 @@ const changeTicker = async (index, numShares, ticker) => {
 
         // Get the ticker data then update the local data
         getTickerData(ticker.toUpperCase()).then((res) => {
+            tickerList[index].name = res.name;
             tickerList[index].yieldAmount = res.yieldAmount;
             tickerList[index].found = res.found;
             // Update visual after data is stored
@@ -76,8 +77,8 @@ const removeTicker = (index) => {
 const updateTickers = () => {
     let list = document.getElementById("list");
     list.innerHTML = '';
-    tickerList.forEach((tick, i) => {
-        appendTicker(i);
+    tickerList.forEach((ticker, i) => {
+        appendTicker(i, ticker);
     });
 }
 
@@ -88,22 +89,22 @@ const addTicker = () => {
 }
 
 // Add another list item to the HTML list
-const appendTicker = (index) => {
+const appendTicker = (index, ticker) => {
     let temp = document.createElement("li");
     temp.setAttribute("key", index);
-    temp.innerHTML = generateElem(index);
+    temp.innerHTML = generateElem(index, ticker);
     document.getElementById("list").appendChild(temp);
 }
 
 // Generates a list item element depending on the given data
-const generateElem = (index) => {
+const generateElem = (index, ticker) => {
     return `
         <div>
             <input
                 id="numSharesIn"
                 type="number"
                 min="0"
-                ${tickerList[index].numShares !== null ? " value="+tickerList[index].numShares : ''}
+                ${ticker.numShares !== null ? " value="+ticker.numShares : ''}
                 placeholder="35"
                 onchange="changeTicker(${index}, this.value, null);"
             >
@@ -111,14 +112,15 @@ const generateElem = (index) => {
             <input
                 id="tickerIn"
                 type="text"
-                ${tickerList[index].ticker !== '' ? "value=\"" + tickerList[index].ticker + "\"" : ''}
+                ${ticker.ticker !== '' ? "value=\"" + ticker.ticker + "\"" : ''}
                 placeholder="ENB.TO"
                 onchange="changeTicker(${index}, null, this.value);"
+                title="${ticker.name}"
             >
         </div>
         <div>
             <p>at</p>
-            <p id="amount">$${tickerList[index].yieldAmount !== '' ? tickerList[index].yieldAmount : '0.00'}</p>
+            <p id="amount">$${ticker.yieldAmount !== '' ? ticker.yieldAmount : '0.00'}</p>
             <p>a share / year</p>
             <button onclick="removeTicker(${index});"><i class="fa fa-trash"></i></button>
         </div>
@@ -319,5 +321,4 @@ window.onload = () => {
             {...empty}
         ];
     }
-    console.log(tickerList);
 }
