@@ -249,9 +249,14 @@ const calculate = () => {
 
     document.getElementById("math-check").innerHTML = `
         ${numContracts} contracts represents ${numContracts * 100} shares.<br>
-        The breakeven premium of $${breakeven.toFixed(5)}, multiplied by ${numContracts * 100} shares, is worth $${(breakeven * numContracts * 100).toFixed(2)}.<br><br>
-        It costs $${parseFloat(flatFees + (perFees * numContracts)).toFixed(2)} in fees to buy and sell this contract, $${((flatFees + (perFees * numContracts)) * 2).toFixed(2)} in total.<br>
-        Having bought at a premium of $${premium}, the total cost for this trade is $${(((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100)).toFixed(2)}.
+        The breakeven premium of $${breakeven.toFixed(5)}, multiplied by ${numContracts * 100} shares, is worth
+            $${(breakeven * numContracts * 100).toFixed(2)}.<br><br>
+        It costs $${parseFloat(flatFees + (perFees * numContracts)).toFixed(2)} in fees to open this trade, and another
+            $${parseFloat(flatFees + (perFees * numContracts)).toFixed(2)} to close it, or
+            $${((flatFees + (perFees * numContracts)) * 2).toFixed(2)} in total trade fees.<br>
+        Having bought at a premium of $${premium}, the total cost for this trade is
+            $${(((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100)).toFixed(2)}
+            where premiums account for $${(premium * numContracts * 100).toFixed(2)}.
     `
 }
 
@@ -259,7 +264,7 @@ const checkGoal = () => {
     let profit = (goal - breakeven) * numContracts * 100;
     
     // Calculate percent return
-    let total = (((flatFees + (perFees * numContracts)) * 2) + (premium * numContracts * 100));
+    let total = (flatFees + (perFees * numContracts) + (premium * numContracts * 100));
     let percent = (((total + profit) / total) - 1) * 100;
 
     // Update the html
@@ -271,7 +276,7 @@ const checkGoal = () => {
     document.getElementById("goal-amount").classList.remove('negative');
     document.getElementById("goal-amount").classList.add(profit >= 0 ? 'positive' : 'negative')
     document.getElementById("goal-check").innerHTML = `
-        $${goal.toFixed(2)} - $${breakeven.toFixed(5)} = $${(goal - breakeven).toFixed(3)} per share per contract<br>
+        $${goal.toFixed(2)} - $${breakeven.toFixed(5)} = $${(goal - breakeven).toFixed(3)} profit per share per contract<br>
         $${(goal - breakeven).toFixed(3)} x ${numContracts} contracts x 100 shares per contract = $${profit.toFixed(2)}
     `;
 
