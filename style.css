@@ -122,8 +122,6 @@ input::placeholder {
     padding: 3vmin;
     gap: 2vmin;
     background-color: #2b262c;
-
-    /* transform: translateX(50%); */
 }
 
 .ticker-list li {

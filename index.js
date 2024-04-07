@@ -89,10 +89,10 @@ const addTicker = () => {
 }
 
 // Add another list item to the HTML list
-const appendTicker = (index, ticker) => {
+const appendTicker = (index) => {
     let temp = document.createElement("li");
     temp.setAttribute("key", index);
-    temp.innerHTML = generateElem(index, ticker);
+    temp.innerHTML = generateElem(index, tickerList[index]);
     document.getElementById("list").appendChild(temp);
 }
 
@@ -122,8 +122,8 @@ const generateElem = (index, ticker) => {
             <p>at</p>
             <p id="amount">$${ticker.yieldAmount !== '' ? ticker.yieldAmount : '0.00'}</p>
             <p>a share / year</p>
-            <button onclick="removeTicker(${index});"><i class="fa fa-trash"></i></button>
         </div>
+        <button onclick="removeTicker(${index});"><i class="fa fa-trash"></i></button>
     `;
 }
 
