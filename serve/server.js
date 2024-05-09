@@ -13,16 +13,18 @@ app.use(cors());
 
 app.get("/hello", async (req, res) => {
     try {
-        let {longName, dividendRate} = await getSign(req.query.ticker);
+        let {longName, dividendRate, postMarketPrice} = await getSign(req.query.ticker);
         res.send({
             name: longName,
             yieldAmount: dividendRate,
+            price: postMarketPrice,
             found: true
         });
     } catch (e) {
         res.send({
             name: "not found",
             yieldAmount:  0.00,
+            price: 0.00,
             found: false
         });
     }
