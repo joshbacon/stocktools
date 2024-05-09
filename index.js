@@ -133,7 +133,7 @@ const updateOutput = () => {
     // Sum the weighted yield of each ticker
     let total = tickerList.reduce((total, tick) => {
         return total +
-            (  
+            (
                 tick.found && tick.yieldAmount !== undefined ?
                 (tick.numShares * tick.yieldAmount) :
                 0
@@ -175,6 +175,27 @@ const updateOutput = () => {
             ${total/525960 > 0 ? '' : '> '}
             $${minute}
         `;
+
+
+    // Calculate total cost of shares
+    let totalPrice = tickerList.reduce((total, tick) => {
+        return total +
+            (
+                tick.found && tick.price !== undefined ?
+                (tick.numShares * tick.price) :
+                0
+            );
+    }, 0);
+
+    // Calculate the effective yield
+    let effectiveYield = ((total / totalPrice) *100).toFixed(2);
+    if (effectiveYield === "Infinity") effectiveYield = 0;
+
+    // Display the effective yield
+    document.getElementById("yield-data")
+        .firstElementChild.innerHTML = 'Effective yield:';
+    document.getElementById("yield-data")
+        .lastElementChild.innerHTML = `${effectiveYield}%`;
 }
 
 

@@ -148,6 +148,18 @@ input::placeholder {
     width: 70%;
 }
 
+#yield-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+#yield-data h2 {
+    color: #5eb111;
+}
+
 .output {
     padding: 5vmin 2vmin 2vmin;
     width: 100%;
