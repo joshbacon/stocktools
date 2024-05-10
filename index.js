@@ -56,6 +56,7 @@ const changeTicker = async (index, numShares, ticker) => {
         getTickerData(ticker.toUpperCase()).then((res) => {
             tickerList[index].name = res.name;
             tickerList[index].yieldAmount = res.yieldAmount;
+            tickerList[index].price = res.price;
             tickerList[index].found = res.found;
             // Update visual after data is stored
             updateTickers();
