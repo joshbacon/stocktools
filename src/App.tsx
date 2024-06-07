@@ -7,7 +7,7 @@ import AnalysisModule from './components/analysis';
 
 function App() {
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(2);
 
   function renderSection() {
     switch(selected) {
