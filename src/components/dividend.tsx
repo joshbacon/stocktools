@@ -138,29 +138,28 @@ function DividendModule () {
 
     // Ticker list item component
     function tickerListItem(tickerData:TickerData, key:number) {
-        // TODO: add a remove button
-        return <div key={key} className="flex flex-row gap-1 mt-2 text-center justify-center">
+        return <div key={key} className="flex flex-row flex-wrap gap-1 mt-2 text-center justify-center border-zinc-500 border-opacity-50 border-b-2 sm:border-b-0 pb-2 sm:pb-0">
             <input
                 type="number"
                 min={0}
                 value={tickerData.numShares}
-                className="pl-1 w-24 bg-fuchsia-700 bg-opacity-50 rounded outline-none"
+                className="pl-1 w-24 bg-fuchsia-700 bg-opacity-50 rounded outline-none inline"
                 onChange={(e) => updateNumShares(key, e.target.value)}
             />
-            <p>shares of</p>
+            <p className='inline ml-2'>shares of</p>
             <input
                 type="text"
-                title={`${tickerData.ticker} - $${tickerData.price}`}
+                title={tickerData.name}
                 value={tickerData.ticker}
-                className="pl-1 w-36 bg-fuchsia-700 bg-opacity-50 rounded outline-none"
+                className="pl-1 w-36 bg-fuchsia-700 bg-opacity-50 rounded outline-none inline ml-2"
                 onChange={(e) => handleTickerChange(key, e.target.value)}
                 onBlur={(e) => updateTicker(key, e.target.value)}
             />
-            <p>at</p>
-            <p className="text-green-600 font-bold">${tickerData.yieldAmount.toFixed(2)}</p>
-            <p>a share / year</p>
+            <p className='inline ml-2'>at</p>
+            <p className="text-green-600 font-bold inline ml-2">${tickerData.yieldAmount.toFixed(2)}</p>
+            <p className='inline ml-2'>a share / year</p>
             <button
-                className='hover:drop-shadow-remove'
+                className='hover:drop-shadow-remove inline ml-2'
                 onClick={() => removeTicker(key)}
             >
                 <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="24px" height="24px">    <path fill="#be123c" d="M 10 2 L 9 3 L 5 3 C 4.448 3 4 3.448 4 4 C 4 4.552 4.448 5 5 5 L 7 5 L 17 5 L 19 5 C 19.552 5 20 4.552 20 4 C 20 3.448 19.552 3 19 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.105 5.895 22 7 22 L 17 22 C 18.105 22 19 21.105 19 20 L 19 7 L 5 7 z"/></svg>
@@ -176,23 +175,23 @@ function DividendModule () {
         let sharesDripped:number = ((tickerData.numShares * tickerData.yieldAmount) / (tickerData.monthly ? 12 : 4)) / tickerData.price;
 
         return <div key={key} className='flex justify-around'>
-            <h2 className='w-1/4 text-fuchsia-700 font-bold'>{tickerData.ticker}</h2>
-            <h2 className='w-1/4 text-orange-600 font-bold'>
+            <h2 className='w-1/4 min-w-28 text-fuchsia-700 font-bold'>{tickerData.ticker}</h2>
+            <h2 className='w-1/4 min-w-28 text-orange-600 font-bold'>
                 <button onClick={() => {
                     updateMonthly(key);
                 }}>
                     {tickerData.monthly ? "Monthly" : "Quarterly"}
                 </button>
             </h2>
-            <h2 className='w-1/4 text-green-600 font-bold'>${tickerData.price}</h2>
-            <h2 className='w-1/4 text-green-600 font-bold'>${divPerShare.toFixed(2)}</h2>
-            <h2 className='w-1/4 text-sky-600 font-bold'>${divPerPayment.toFixed(2)}</h2>
-            <h2 className='w-1/4 text-sky-600 font-bold'>{Math.floor(sharesDripped)} ({((sharesDripped - Math.floor(sharesDripped)) * 100).toFixed(0)}%)</h2>
+            <h2 className='w-1/4 min-w-28 text-green-600 font-bold'>${tickerData.price}</h2>
+            <h2 className='w-1/4 min-w-28 text-green-600 font-bold'>${divPerShare.toFixed(2)}</h2>
+            <h2 className='w-1/4 min-w-28 text-sky-600 font-bold'>${divPerPayment.toFixed(2)}</h2>
+            <h2 className='w-1/4 min-w-28 text-sky-600 font-bold'>{Math.floor(sharesDripped)} ({((sharesDripped - Math.floor(sharesDripped)) * 100).toFixed(0)}%)</h2>
         </div>
     }
 
     // Main component
-    return <div className="flex justify-center mt-5 bg-gradient-to-br from-purple-800 to-fuchsia-700 rounded-md font-semibold drop-shadow-card">
+    return <div className="flex justify-center mt-5 bg-gradient-to-br from-purple-800 to-fuchsia-700 rounded-md font-semibold drop-shadow-card overflow-x-hidden">
         <div className="bg-neutral-800 w-full m-1 p-3">
             <section>
                 <h2 className="text-lg">I have:</h2>
@@ -231,20 +230,21 @@ function DividendModule () {
                     <li className='flex flex-row gap-1'>
                         <h1 className='text-green-600'>${(total/525960).toFixed(2)}</h1><h1> / minute</h1>
                     </li>
-                    <li className='flex flex-row gap-1'>
-                        <h1>Effective Yield:</h1><h1 className='text-green-600'>{effectiveYield.toFixed(2)}%</h1>
+                    <li>
+                        <h1 className='inline'>Effective Yield:</h1>
+                        <h1 className='text-green-600 inline ml-2'>{effectiveYield.toFixed(2)}%</h1>
                     </li>
                 </ul>
             </section>
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2'>
+            <section className='border-t-2 border-zinc-500 mt-5 pt-2 overflow-x-auto'>
                 <h2 className="text-lg">Drip Calculator</h2>
-                <div className='flex justify-around border-b border-zinc-500'>
-                    <h2 className='w-1/4 text-fuchsia-700 font-bold'>Ticker</h2>
-                    <h2 className='w-1/4 text-orange-600 font-bold'>Monthly</h2>
-                    <h2 className='w-1/4 text-green-600 font-bold'>Price</h2>
-                    <h2 className='w-1/4 text-green-600 font-bold'>Div Payment / Share</h2>
-                    <h2 className='w-1/4 text-sky-600 font-bold'>Div Payment / Period</h2>
-                    <h2 className='w-1/4 text-sky-600 font-bold'>Num Shares Dripped</h2>
+                <div className='flex justify-around'>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-fuchsia-700 font-bold'>Ticker</h2>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-orange-600 font-bold'>Monthly</h2>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Price</h2>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Div Payment / Share</h2>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Div Payment / Period</h2>
+                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Num Shares Dripped</h2>
                 </div>
                 { tickerList.map((ticker, index) => {
                     return dripItem(ticker, index);

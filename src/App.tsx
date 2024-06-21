@@ -19,7 +19,7 @@ function App() {
 
   return (
     <>
-      <ul className='flex flex-row justify-center gap-10 list-none bg-fuchsia-700 rounded-md'>
+      <ul className='flex flex-col sm:flex-row sm:gap-10 justify-center items-center list-none bg-fuchsia-700 rounded-md'>
         <li
           key={0}
           className={`my-1 py-1 px-3 rounded-md cursor-pointer font-semibold hover:bg-fuchsia-900 ${selected === 0 ? 'bg-zinc-800' : ''}`}
