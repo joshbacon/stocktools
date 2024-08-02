@@ -6,7 +6,7 @@ import OptionModule from './components/option';
 
 function App() {
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(1);
 
   function renderSection() {
     switch(selected) {
