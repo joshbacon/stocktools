@@ -69,6 +69,8 @@ function DividendModule () {
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
         let tickerPath = "http://172.105.104.89:9001/hello?ticker=" + ticker;
+        // let tickerPath = "http://localhost:3000/dividend?ticker=" + ticker;
+        console.log(tickerPath);
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }
@@ -80,6 +82,7 @@ function DividendModule () {
         setTickerList(temp);
     }
 
+    // Update state on ticker change
     function handleTickerChange(index:number, value:string) {
         let temp = [...tickerList];
         temp[index].ticker = value.toUpperCase();

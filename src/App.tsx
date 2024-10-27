@@ -3,17 +3,20 @@ import './App.css';
 
 import DividendModule from './components/dividend';
 import OptionModule from './components/option';
+import ContractModule from './components/contract';
 
 function App() {
 
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(2);
 
   function renderSection() {
     switch(selected) {
       case 0:
         return <DividendModule/>;
-      case 1:
-        return <OptionModule/>;
+        case 1:
+          return <OptionModule/>;
+        case 2:
+          return <ContractModule/>;
     }
   }
 
@@ -25,14 +28,21 @@ function App() {
           className={`my-1 py-1 px-3 rounded-md cursor-pointer font-semibold hover:bg-fuchsia-900 ${selected === 0 ? 'bg-zinc-800' : ''}`}
           onClick={() => setSelected(0)}
         >
-            Dividend Calculator
+          Dividend Calculator
         </li>
         <li
           key={1}
           className={`my-1 py-1 px-3 rounded-md cursor-pointer font-semibold hover:bg-fuchsia-900 ${selected === 1 ? 'bg-zinc-800' : ''}`}
           onClick={() => setSelected(1)}
         >
-            Option Calculator
+          Option Calculator
+        </li>
+        <li
+          key={2}
+          className={`my-1 py-1 px-3 rounded-md cursor-pointer font-semibold hover:bg-fuchsia-900 ${selected === 2 ? 'bg-zinc-800' : ''}`}
+          onClick={() => setSelected(2)}
+        >
+          Contract Monitor
         </li>
       </ul>
       { renderSection() }
