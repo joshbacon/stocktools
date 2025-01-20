@@ -232,7 +232,7 @@ function OptionModule () {
                 </button>
             </section>
 
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex flex-col gap-5 text-lg'>
+            {/* <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex flex-col gap-5 text-lg'>
                 <h1 className='text-2xl'>Spread Calculator</h1>
                 <div className='grid grid-cols-1 sm:grid-cols-2 sm:gap-5 sm:text-end'>
                     <h1>Flat Brokerage Fees</h1>
@@ -367,7 +367,7 @@ function OptionModule () {
                 >
                     Calculate
                 </button>
-            </section>
+            </section> */}
         </div>
     </div>
 }

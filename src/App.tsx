@@ -7,7 +7,7 @@ import ContractModule from './components/contract';
 
 function App() {
 
-  const [selected, setSelected] = useState(2);
+  const [selected, setSelected] = useState(0);
 
   function renderSection() {
     switch(selected) {
@@ -37,13 +37,13 @@ function App() {
         >
           Option Calculator
         </li>
-        <li
+        {/* <li
           key={2}
           className={`my-1 py-1 px-3 rounded-md cursor-pointer font-semibold hover:bg-fuchsia-900 ${selected === 2 ? 'bg-zinc-800' : ''}`}
           onClick={() => setSelected(2)}
         >
           Contract Monitor
-        </li>
+        </li> */}
       </ul>
       { renderSection() }
     </>

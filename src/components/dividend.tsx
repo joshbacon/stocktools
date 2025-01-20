@@ -30,9 +30,9 @@ function DividendModule () {
 
     // Load existing ticker list from local storage
     useEffect(() => {
-        let storedData:string|null = localStorage.getItem("tickerList");
-        if (storedData) {
-            let data:TickerData[] = JSON.parse(storedData);
+        let tickerData:string|null = localStorage.getItem("tickerList");
+        if (tickerData) {
+            let data:TickerData[] = JSON.parse(tickerData);
             setTickerList(data);
             refreshTickers(data);
         }
@@ -44,6 +44,7 @@ function DividendModule () {
         for (let i:number = 0; i < temp.length; i++){
             await getTickerData(temp[i].ticker).then(newData => {
                 if (newData.found) {
+                    temp[i].found = newData.found;
                     temp[i].price = newData.price;
                     temp[i].yieldAmount = newData.yieldAmount;
                 }
@@ -68,9 +69,7 @@ function DividendModule () {
 
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
-        let tickerPath = "http://172.105.104.89:9001/hello?ticker=" + ticker;
-        // let tickerPath = "http://localhost:3000/dividend?ticker=" + ticker;
-        console.log(tickerPath);
+        let tickerPath = "http://172.105.104.89:9001/dividend?ticker=" + ticker;
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }
@@ -241,17 +240,17 @@ function DividendModule () {
             </section>
             <section className='border-t-2 border-zinc-500 mt-5 pt-2 overflow-x-auto'>
                 <h2 className="text-lg">Drip Calculator</h2>
-                <div className='flex justify-around'>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-fuchsia-700 font-bold'>Ticker</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-orange-600 font-bold'>Monthly</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Price</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Div Payment / Share</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Div Payment / Period</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Num Shares Dripped</h2>
-                </div>
-                { tickerList.map((ticker, index) => {
-                    return dripItem(ticker, index);
-                }) }
+                    <div className='flex justify-around'>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-fuchsia-700 font-bold'>Ticker</h2>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-orange-600 font-bold'>Monthly</h2>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Price</h2>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Div Payment / Share</h2>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Div Payment / Period</h2>
+                        <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Num Shares Dripped</h2>
+                    </div>
+                    { tickerList.map((ticker, index) => {
+                        return dripItem(ticker, index);
+                    }) }
             </section>
         </div>
     </div>
