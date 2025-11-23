@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function DividendModule () {
+function PaperModule () {
 
     interface TickerData {
         ticker: string,
         name: string,
         numShares: number,
         price: number,
-        yieldAmount: number,
-        monthly: boolean,
+        avgCost: number,
         found: boolean
     }
 
@@ -18,19 +17,23 @@ function DividendModule () {
         name: "",
         numShares: 0,
         price: 0,
-        yieldAmount: 0,
-        monthly: false,
+        avgCost: 0,
         found: false
     }
 
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
+
     const [tickerList, setTickerList] = useState<TickerData[]>([emptyTicker]);
 
-    const [total, setTotal] = useState<number>(0);
-    const [effectiveYield, setEffectiveYield] = useState<number>(0);
+    const [totalCost, setTotalCost] = useState<number>(0);
+    const [totalValue, setTotalValue] = useState<number>(0);
 
     // Load existing ticker list from local storage
     useEffect(() => {
-        let tickerData:string|null = localStorage.getItem("tickerList");
+        let tickerData:string|null = localStorage.getItem("growthTickerList");
         if (tickerData) {
             let data:TickerData[] = JSON.parse(tickerData);
             setTickerList(data);
@@ -46,7 +49,6 @@ function DividendModule () {
                 if (newData.found) {
                     temp[i].found = newData.found;
                     temp[i].price = newData.price;
-                    temp[i].yieldAmount = newData.yieldAmount;
                 }
             });
         }
@@ -96,46 +98,35 @@ function DividendModule () {
             if (data.found) {
                 temp[index].name = data.name;
                 temp[index].price = data.price;
-                temp[index].yieldAmount = data.yieldAmount;
             }
         });
         setTickerList(temp);
     }
 
-    // Updates the output values
-    function updateTotals() {
-        // Find total yield dollar amount
-        let yieldTotal:number = tickerList.reduce((total, ticker) => {
-            return total + (
-                ticker.found && ticker.yieldAmount !== undefined ?
-                (ticker.numShares * ticker.yieldAmount) : 0
-            )
-        }, 0);
-        setTotal(yieldTotal);
-        
-        // Find total price dollar amount
-        let priceTotal:number = tickerList.reduce((total, ticker) => {
-            return total + (
-                ticker.found && ticker.price !== undefined ?
-                (ticker.numShares * ticker.price) : 0
-            )
-        }, 0);
-        if (priceTotal > 0)
-            setEffectiveYield( (yieldTotal / priceTotal) * 100 )
-        else
-            setEffectiveYield(0);
-        
-        // Save updated ticker list to local storage
-        localStorage.setItem("tickerList", JSON.stringify(tickerList));
+    // Update the number of shares at a list index
+    function updateAvgCost(index:number, value:string){
+        let temp = [...tickerList];
+        temp[index].avgCost = parseFloat(value);
+        setTickerList(temp);
     }
 
-    // Mark a ticker as a monthly dividend payer
-    function updateMonthly(index:number) {
-        let temp:TickerData[] = [...tickerList];
-        temp[index].monthly = !tickerList[index].monthly;
-        setTickerList(temp);
+    // Updates the output values
+    function updateTotals() {        
+        // Find total price dollar amount
+        let totalCost:number = 0;
+        let totalValue:number = 0;
+        for (let i=0; i < tickerList.length; i++) {
+            let currTicker:TickerData = tickerList[i];
+            if (currTicker.found && currTicker.price !== undefined) {
+                totalCost += currTicker.numShares * currTicker.avgCost;
+                totalValue += currTicker.numShares * currTicker.price;
+            }
+        }
+        setTotalCost(totalCost);
+        setTotalValue(totalValue);
+        
         // Save updated ticker list to local storage
-        localStorage.setItem("tickerList", JSON.stringify(tickerList));
+        localStorage.setItem("growthTickerList", JSON.stringify(tickerList));
     }
 
     // Ticker list item component
@@ -158,8 +149,14 @@ function DividendModule () {
                 onBlur={(e) => updateTicker(key, e.target.value)}
             />
             <p className='inline ml-2'>at</p>
-            <p className="text-green-600 font-bold inline ml-2">${tickerData.yieldAmount.toFixed(2)}</p>
-            <p className='inline ml-2'>a share / year</p>
+            <input
+                type="number"
+                min={0}
+                value={tickerData.avgCost}
+                className="pl-1 w-36 bg-fuchsia-700 bg-opacity-50 rounded outline-none inline ml-2"
+                onChange={(e) => updateAvgCost(key, e.target.value)}
+            />
+            <p className='inline ml-2'>from {formatter.format(tickerData.price)}</p>
             <button
                 className='hover:drop-shadow-remove inline ml-2'
                 onClick={() => removeTicker(key)}
@@ -169,26 +166,17 @@ function DividendModule () {
         </div>
     }
 
-    // Drip Calculation list item component
-    function dripItem(tickerData:TickerData, key:number) {
-
-        let divPerShare:number = tickerData.yieldAmount / (tickerData.monthly ? 12 : 4);
-        let divPerPayment:number = tickerData.numShares * divPerShare;
-        let sharesDripped:number = ((tickerData.numShares * tickerData.yieldAmount) / (tickerData.monthly ? 12 : 4)) / tickerData.price;
-
-        return <div key={key} className='flex justify-around'>
-            <h2 className='w-1/4 min-w-28 text-fuchsia-700 font-bold'>{tickerData.ticker}</h2>
-            <h2 className='w-1/4 min-w-28 text-orange-600 font-bold'>
-                <button onClick={() => {
-                    updateMonthly(key);
-                }}>
-                    {tickerData.monthly ? "Monthly" : "Quarterly"}
-                </button>
-            </h2>
-            <h2 className='w-1/4 min-w-28 text-green-600 font-bold'>${tickerData.price}</h2>
-            <h2 className='w-1/4 min-w-28 text-green-600 font-bold'>${divPerShare.toFixed(2)}</h2>
-            <h2 className='w-1/4 min-w-28 text-sky-600 font-bold'>${divPerPayment.toFixed(2)}</h2>
-            <h2 className='w-1/4 min-w-28 text-sky-600 font-bold'>{Math.floor(sharesDripped)} ({((sharesDripped - Math.floor(sharesDripped)) * 100).toFixed(0)}%)</h2>
+    // Ticker list item component
+    function growthListItem(tickerData:TickerData, key:number) {
+        let cost = tickerData.numShares * tickerData.avgCost;
+        let value = tickerData.numShares * tickerData.price;
+        return <div key={key} className="flex justify-around gap-1 mt-2 text-center border-zinc-500 border-opacity-50 border-b-2 sm:border-b-0 pb-2 sm:pb-0">
+            <p className='w-1/4 min-w-28 inline ml-2 pr-3'>{tickerData.ticker}</p>
+            <p className='w-1/4 min-w-28 inline ml-2 text-sky-600'>Cost: {formatter.format(tickerData.numShares * tickerData.avgCost)}</p>
+            <p className='w-1/4 min-w-28 inline ml-2 text-fuchsia-700'>Value: {formatter.format(tickerData.numShares * tickerData.price)}</p>
+            <p className={`w-1/4 min-w-28 inline ml-2 ${value - cost >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                Growth: {value - cost < 0 ? "-" : ""}{formatter.format(Math.abs(value - cost))} ({(((value / cost) - 1) * 100).toFixed(2)}%)
+            </p>
         </div>
     }
 
@@ -215,45 +203,50 @@ function DividendModule () {
                     </button>
                 </div>
             </section>
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2'>
+            <section className='border-t-2 border-zinc-500 mt-5 pt-2 overflow-x-auto'>
+                { tickerList.map((ticker, index) => {
+                    return growthListItem(ticker, index);
+                }) }
+            </section>
+            <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex justify-evenly flex-wrap'>
                 <ul className='list-none text-xl flex flex-col items-center'>
                     <li className='flex flex-row gap-1'>
-                        <h1 className='text-green-600'>${total.toFixed(2)}</h1><h1> / year</h1>
+                        <h1 className='text-3xl'>Total Cost</h1>
                     </li>
                     <li className='flex flex-row gap-1'>
-                        <h1 className='text-green-600'>${(total/4).toFixed(2)}</h1><h1> / quarter</h1>
-                    </li>
-                    <li className='flex flex-row gap-1'>
-                        <h1 className='text-green-600'>${(total/12).toFixed(2)}</h1><h1> / month</h1>
-                    </li>
-                    <li className='flex flex-row gap-1'>
-                        <h1 className='text-green-600'>${(total/365).toFixed(2)}</h1><h1> / day</h1>
-                    </li>
-                    <li className='flex flex-row gap-1'>
-                        <h1 className='text-green-600'>${(total/525960).toFixed(2)}</h1><h1> / minute</h1>
-                    </li>
-                    <li>
-                        <h1 className='inline'>Effective Yield:</h1>
-                        <h1 className='text-green-600 inline ml-2'>{effectiveYield.toFixed(2)}%</h1>
+                        <h1 className='text-2xl text-sky-600'>
+                            {formatter.format(totalCost)}
+                        </h1>
                     </li>
                 </ul>
-            </section>
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2 overflow-x-auto'>
-                <h2 className="text-lg">Drip Calculator</h2>
-                <div className='flex justify-around'>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-fuchsia-700 font-bold'>Ticker</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-orange-600 font-bold'>Monthly</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Price</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-green-600 font-bold'>Div Payment / Share</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Div Payment / Period</h2>
-                    <h2 className='w-1/4 min-w-28 border-b border-zinc-500 text-sky-600 font-bold'>Num Shares Dripped</h2>
-                </div>
-                { tickerList.map((ticker, index) => {
-                    return dripItem(ticker, index);
-                }) }
+                <ul className='list-none text-xl flex flex-col items-center'>
+                    <li className='flex flex-row gap-1'>
+                        <h1 className='text-3xl'>Total Value</h1>
+                    </li>
+                    <li className='flex flex-row gap-1'>
+                        <h1 className='text-2xl text-fuchsia-700'>
+                            {formatter.format(totalValue)}
+                        </h1>
+                    </li>
+                </ul>
+                <ul className='list-none text-xl flex flex-col items-center'>
+                    <li className='flex flex-row gap-1'>
+                        <h1 className='text-3xl'>Total Growth</h1>
+                    </li>
+                    <li className='flex flex-row gap-1'>
+                        <h1 className={`text-2xl ${totalValue - totalCost >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {totalValue - totalCost < 0 ? "-" : ""}{formatter.format(Math.abs(totalValue - totalCost))}
+                        </h1>
+                    </li>
+                    <li className='flex flex-row gap-1'>
+                        <h1 className={`text-2xl ${totalValue - totalCost >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                            {((1 - (totalCost / totalValue)) * 100).toFixed(2)}%
+                        </h1>
+                    </li>
+                </ul>
             </section>
         </div>
     </div>
 }
 
-export default DividendModule;
+export default PaperModule;

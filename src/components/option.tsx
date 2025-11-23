@@ -25,19 +25,19 @@ function OptionModule () {
     const [budgetContracts, setBudgetContracts] = useState<number>(0);
 
     // Spreac Calculator Variables
-    const [numCalls, setNumCalls] = useState<number>(4);
-    const [callPremium, setCallPremium] = useState<number>(0.25);
-    const [costOfCalls, setCostOfCalls] = useState<number>(0);
-    const [callFees, setCallFees] = useState<number>(0);
-    const [costOfPuts, setCostOfPuts] = useState<number>(0);
-    const [numPuts, setNumPuts] = useState<number>(4);
-    const [putFees, setPutFees] = useState<number>(0);
-    const [putPremium, setPutPremium] = useState<number>(0.32);
-    const [spreadWinner, setSpreadWinner] = useState<string>("calls");
-    const [spreadSalePremium, setSpreadSalePremium] = useState<number>(1);
-    const [spreadSaleTotal, setSpreadSaleTotal] = useState<number>(0);
-    const [spreadReturnDollar, setSpreadReturnDollar] = useState<number>(0);
-    const [spreadReturnPercent, setSpreadReturnPercent] = useState<number>(0);
+    // const [numCalls, setNumCalls] = useState<number>(4);
+    // const [callPremium, setCallPremium] = useState<number>(0.25);
+    // const [costOfCalls, setCostOfCalls] = useState<number>(0);
+    // const [callFees, setCallFees] = useState<number>(0);
+    // const [costOfPuts, setCostOfPuts] = useState<number>(0);
+    // const [numPuts, setNumPuts] = useState<number>(4);
+    // const [putFees, setPutFees] = useState<number>(0);
+    // const [putPremium, setPutPremium] = useState<number>(0.32);
+    // const [spreadWinner, setSpreadWinner] = useState<string>("calls");
+    // const [spreadSalePremium, setSpreadSalePremium] = useState<number>(1);
+    // const [spreadSaleTotal, setSpreadSaleTotal] = useState<number>(0);
+    // const [spreadReturnDollar, setSpreadReturnDollar] = useState<number>(0);
+    // const [spreadReturnPercent, setSpreadReturnPercent] = useState<number>(0);
 
     // Find the breackeven increase and total breakeven premium
     function calculateBreakeven() {
@@ -64,23 +64,23 @@ function OptionModule () {
     }
 
     // Calculate the total P/L for a long straddle assuming one contract expires worthless
-    function calculateSpread() {
-        const callOpenFees = brokerageFee + numCalls * contractFee;
-        const putOpenFees = brokerageFee + numPuts * contractFee;
-        setCallFees(callOpenFees);
-        setPutFees(putOpenFees);
+    // function calculateSpread() {
+    //     const callOpenFees = brokerageFee + numCalls * contractFee;
+    //     const putOpenFees = brokerageFee + numPuts * contractFee;
+    //     setCallFees(callOpenFees);
+    //     setPutFees(putOpenFees);
 
-        const callsOpenCost:number = brokerageFee + (contractFee + callPremium * 100) * numCalls;
-        const putsOpenCost:number = brokerageFee + (contractFee + putPremium * 100) * numPuts;
-        setCostOfCalls(callsOpenCost);
-        setCostOfPuts(putsOpenCost);
+    //     const callsOpenCost:number = brokerageFee + (contractFee + callPremium * 100) * numCalls;
+    //     const putsOpenCost:number = brokerageFee + (contractFee + putPremium * 100) * numPuts;
+    //     setCostOfCalls(callsOpenCost);
+    //     setCostOfPuts(putsOpenCost);
         
-        const totalSale:number = (spreadWinner === "calls" ? numCalls : numPuts) * spreadSalePremium * 100;
-        const totalReturn:number = totalSale - callsOpenCost - callOpenFees - putsOpenCost - putOpenFees;
-        setSpreadSaleTotal(totalSale - (callOpenFees + putOpenFees));
-        setSpreadReturnDollar(totalReturn);
-        setSpreadReturnPercent((totalReturn / (callsOpenCost + putsOpenCost)) * 100);
-    }
+    //     const totalSale:number = (spreadWinner === "calls" ? numCalls : numPuts) * spreadSalePremium * 100;
+    //     const totalReturn:number = totalSale - callsOpenCost - callOpenFees - putsOpenCost - putOpenFees;
+    //     setSpreadSaleTotal(totalSale - (callOpenFees + putOpenFees));
+    //     setSpreadReturnDollar(totalReturn);
+    //     setSpreadReturnPercent((totalReturn / (callsOpenCost + putsOpenCost)) * 100);
+    // }
 
     return <div className="flex justify-center mt-5 bg-gradient-to-br from-purple-800 to-fuchsia-700 rounded-md font-semibold drop-shadow-card">
         <div className="bg-neutral-800 w-full m-1 p-3">
