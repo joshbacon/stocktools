@@ -4,11 +4,10 @@ import './App.css';
 import PaperModule from './components/paper';
 import DividendModule from './components/dividend';
 import OptionModule from './components/option';
-// import ContractModule from './components/contract';
 
 function App() {
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(1);
 
   function renderSection() {
     switch(selected) {

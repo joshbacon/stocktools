@@ -24,7 +24,7 @@ function OptionModule () {
 
     const [budgetContracts, setBudgetContracts] = useState<number>(0);
 
-    // Spreac Calculator Variables
+    // Spread Calculator Variables
     // const [numCalls, setNumCalls] = useState<number>(4);
     // const [callPremium, setCallPremium] = useState<number>(0.25);
     // const [costOfCalls, setCostOfCalls] = useState<number>(0);

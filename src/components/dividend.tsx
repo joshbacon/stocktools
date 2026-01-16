@@ -69,7 +69,7 @@ function DividendModule () {
 
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
-        let tickerPath = "http://172.105.104.89:9001/dividend?ticker=" + ticker;
+        let tickerPath = "http://localhost:3000/dividend?ticker=" + ticker;
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }

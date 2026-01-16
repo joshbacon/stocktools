@@ -1,30 +1,18 @@
-# React + TypeScript + Vite
+<a href="http://stocktools.joshbacon.ca" target="_blank" style="display: flex; gap: 1em; align-items: center; padding-bottom: 1em" >
+  <img src="src/assets/icon.ico" alt="Logo" width="59" height="59">
+  <h style="font-size: 28px; font-weight: bold">Stock tools</h>
+</a>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+** UNDER CONSTRUCTION: the yahoo finance API I'm using for market data migrated to TypeScript so I need to refactor the server **
 
-Currently, two official plugins are available:
+A collection of stock calculation tools I use for managing my personal investments.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Growth Calculator
+Enter your number of shares and average cost to see at a glance total growth as well as a per-stock breakdown.
 
-## Expanding the ESLint configuration
+## Dividend Calculator
+Enter the number of shares you have of which stocks and get the most up to date numbers thanks to the 
+<a href="https://www.npmjs.com/package/yahoo-finance2" target="_blank">yahoo finance API</a> running on a custom Node server. See your effective dividend yield and how much you make in dividends each year, quarter, month, day, and even by the minute.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Option Calculator
+Enter the fees your brokerage charges and details of the contract(s) purchased to find the premium required to breakeven. You can also calculate profit by entering a desired sale premium price.
