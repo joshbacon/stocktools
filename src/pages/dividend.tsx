@@ -29,6 +29,7 @@ function DividendModule () {
     const [effectiveYield, setEffectiveYield] = useState<number>(0);
     const [total, setTotal] = useState<number>(0);
     const [totalDrips, setTotalDrips] = useState<number>(0);
+    
 
     // Load existing ticker list from local storage
     useEffect(() => {
@@ -203,7 +204,6 @@ function DividendModule () {
                 />
             </td>
             <td className="font-dm-mono tracking-tight">{percentFormatter.format(tickerData.yield / tickerData.price)}</td>
-            {/* <td className="font-dm-mono tracking-tight">{currencyFormatter.format(divPerPayment)}</td> */}
             <td>
                 <button className="font-dm-sans text-sm font-normal uppercase tracking-[0.04em]" onClick={() => {
                     updateMonthly(key);
@@ -225,7 +225,7 @@ function DividendModule () {
     }
     
     // Main component
-    return <div className="flex flex-col gap-20">
+    return <div className="flex flex-col gap-10">
         <div className="flex flex-wrap justify-center gap-10">
             <StatCard title={"Effective Dividend Yield"} amount={effectiveYield} icon={"💸"} format={"percent"} />
             <StatCard title={"Total Annual Dividends"} amount={total} icon={"💲"} />
@@ -235,12 +235,43 @@ function DividendModule () {
             <table className="border-separate border-spacing-x-10 border-spacing-y-1">
                 <thead>
                     <tr>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Ticker</th>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Number of Shares</th>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Dividend Yield</th>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Payout Frequency</th>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Amount Per Payout</th>
-                        <th className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">Number of Shares DRIPed</th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="Stock ticker following yahoo finance formatting (e.x. use .TO for TSX stocks)"
+                        >
+                            Ticker
+                        </th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="Number of shares currently held for a given stock"
+                        >
+                            Number of Shares
+                        </th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="Dividend yield percentage of a given stock"
+                        >
+                            Dividend Yield
+                        </th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="How often a stock pays out dividends (monthly or quarterly)"
+                        >
+                            Payout Frequency
+                        </th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="Dollar amount you get paid based on yield and number of shares held"
+                        >
+                            Amount Per Payout
+                        </th>
+                        <th
+                            className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
+                            title="Number of shares each dividend payout can DRIP.
+Percentage represents how close you are to another share"
+                        >
+                            Number of Shares DRIPed
+                        </th>
                     </tr>
                     <tr>
                         <td colSpan={7} className="p-0">
