@@ -1,7 +1,8 @@
-<a href="http://stocktools.joshbacon.ca" target="_blank" style="display: flex; gap: 1em; align-items: center; padding-bottom: 1em" >
-  <img src="src/assets/icon.ico" alt="Logo" width="59" height="59">
-  <h style="font-size: 28px; font-weight: bold">Stock tools</h>
+<a href="http://stocktools.joshbacon.ca" target="_blank" style="margin-left: 90%" >
+  <img src="src/assets/icon.ico" width="64" />
 </a>
+
+# Stock Tools
 
 ** UNDER CONSTRUCTION: the yahoo finance API I'm using for market data migrated to TypeScript so I need to refactor the server **
 

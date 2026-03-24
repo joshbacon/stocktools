@@ -6,8 +6,7 @@ export default {
   theme: {
     extend: {
       dropShadow: {
-        'card': '0 10px 8px rgba(162, 28, 175, 0.25)',
-        'button': '0 5px 5px rgba(162, 28, 175, 1)',
+        'add': '0 0px 10px rgba(70, 193, 162, 1)',
         'remove': '0 0px 5px rgba(190, 18, 60, 1)'
       }
     },
