@@ -1,19 +1,31 @@
-<a href="http://stocktools.joshbacon.ca" target="_blank" style="margin-left: 90%" >
+
+<div style="display:flex; justify-content:space-between; align-items: center; margin-bottom:20px;">
+  <p style="font-size:30px; font-weight:bold">Stock Tools</p>
   <img src="src/assets/icon.ico" width="64" />
-</a>
+</div>
 
-# Stock Tools
 
-** UNDER CONSTRUCTION: the yahoo finance API I'm using for market data migrated to TypeScript so I need to refactor the server **
+A web application that hosts a collection of stock calculation tools I use for managing my personal investments.
 
-A collection of stock calculation tools I use for managing my personal investments.
+> Check it out [here](http://stocktools.joshbacon.ca/)
 
-## Growth Calculator
-Enter your number of shares and average cost to see at a glance total growth as well as a per-stock breakdown.
+![Dividend Growth Page](public/div_page.jpg)
 
-## Dividend Calculator
-Enter the number of shares you have of which stocks and get the most up to date numbers thanks to the 
-<a href="https://www.npmjs.com/package/yahoo-finance2" target="_blank">yahoo finance API</a> running on a custom Node server. See your effective dividend yield and how much you make in dividends each year, quarter, month, day, and even by the minute.
+## Tech Stack
+| Layer       | Technology                  |
+|-------------|-----------------------------|
+| Frontend    | TypeScript, React, Tailwind |
+| Backend     | Python, Flask               |
 
-## Option Calculator
-Enter the fees your brokerage charges and details of the contract(s) purchased to find the premium required to breakeven. You can also calculate profit by entering a desired sale premium price.
+> Market data is pulled using the [yfinance python library](https://pypi.org/project/yfinance/)
+
+## Features
+
+### Growth Tracker
+Enter the number of shares you own along with the average cost to see at a glance the total growth as well as a per-stock breakdown.
+
+### Dividend Tracker
+Enter the number of shares you own and see your effective dividend yield as well as how much you make in dividends each year, quarter, month, day, and even by the minute.
+
+### Option Calculator
+Enter the fees your brokerage charges and details of the contract(s) purchased to find the premium required to breakeven. You can also calculate profit by entering a desired sale premium.
