@@ -7,7 +7,7 @@ import icon from "./assets/icon.ico";
 
 function App() {
 
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(2);
   const [navOpen, setNavOpen] = useState(false);
 
   function renderSection() {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function OptionModule () {
 
@@ -8,8 +8,8 @@ function OptionModule () {
     const [numberOfContracts, setNumberOfContracts] = useState<number>(5);
     const [contractPremium, setContractPremium] = useState<number>(0.25);
 
-    const [breakevenIncrease, setBreakevenIncrease] = useState<number>(0);
     const [breakevenPremium, setBreakevenPremium] = useState<number>(0);
+    const [breakevenIncrease, setBreakevenIncrease] = useState<number>(0);
 
     // Profit Calculator Variables
     const [saleBreakevenPremium, setSaleBreakevenPremium] = useState<number>(0.25);
@@ -24,22 +24,7 @@ function OptionModule () {
 
     const [budgetContracts, setBudgetContracts] = useState<number>(0);
 
-    // Spread Calculator Variables
-    // const [numCalls, setNumCalls] = useState<number>(4);
-    // const [callPremium, setCallPremium] = useState<number>(0.25);
-    // const [costOfCalls, setCostOfCalls] = useState<number>(0);
-    // const [callFees, setCallFees] = useState<number>(0);
-    // const [costOfPuts, setCostOfPuts] = useState<number>(0);
-    // const [numPuts, setNumPuts] = useState<number>(4);
-    // const [putFees, setPutFees] = useState<number>(0);
-    // const [putPremium, setPutPremium] = useState<number>(0.32);
-    // const [spreadWinner, setSpreadWinner] = useState<string>("calls");
-    // const [spreadSalePremium, setSpreadSalePremium] = useState<number>(1);
-    // const [spreadSaleTotal, setSpreadSaleTotal] = useState<number>(0);
-    // const [spreadReturnDollar, setSpreadReturnDollar] = useState<number>(0);
-    // const [spreadReturnPercent, setSpreadReturnPercent] = useState<number>(0);
-
-    // Find the breackeven increase and total breakeven premium
+    // Find the breakeven increase and total breakeven premium
     function calculateBreakeven() {
         const openFees:number = brokerageFee + (contractFee * numberOfContracts);
         const increase:number = openFees*2 / (numberOfContracts * 100);
@@ -56,318 +41,180 @@ function OptionModule () {
         setPrecentProfit((((difference + initialCost) / initialCost) -1) * 100);
     }
 
-    // Calucalte how many shares can be bought at a certain premium with a given amount of money
+    // Calculate how many shares can be bought at a certain premium with a given amount of money
     function calculateBudgetContracts() {
         const workingBudget:number = budgetAmount - brokerageFee;
         const numContracts:number = Math.floor(workingBudget / (budgetPremium * 100 + contractFee));
         setBudgetContracts(numContracts);
     }
 
-    // Calculate the total P/L for a long straddle assuming one contract expires worthless
-    // function calculateSpread() {
-    //     const callOpenFees = brokerageFee + numCalls * contractFee;
-    //     const putOpenFees = brokerageFee + numPuts * contractFee;
-    //     setCallFees(callOpenFees);
-    //     setPutFees(putOpenFees);
+    // Recalculates everything when fees are updated
+    function updateNumbers() {
+        calculateBreakeven();
+        calculateProfit();
+        calculateBudgetContracts();
+    }
 
-    //     const callsOpenCost:number = brokerageFee + (contractFee + callPremium * 100) * numCalls;
-    //     const putsOpenCost:number = brokerageFee + (contractFee + putPremium * 100) * numPuts;
-    //     setCostOfCalls(callsOpenCost);
-    //     setCostOfPuts(putsOpenCost);
-        
-    //     const totalSale:number = (spreadWinner === "calls" ? numCalls : numPuts) * spreadSalePremium * 100;
-    //     const totalReturn:number = totalSale - callsOpenCost - callOpenFees - putsOpenCost - putOpenFees;
-    //     setSpreadSaleTotal(totalSale - (callOpenFees + putOpenFees));
-    //     setSpreadReturnDollar(totalReturn);
-    //     setSpreadReturnPercent((totalReturn / (callsOpenCost + putsOpenCost)) * 100);
-    // }
+    useEffect(() => {
+        updateNumbers();
+    }, [brokerageFee, contractFee])
 
-    return <div className="flex justify-center mt-5 bg-gradient-to-br from-purple-800 to-fuchsia-700 rounded-md font-semibold drop-shadow-card">
-        <div className="bg-neutral-800 w-full m-1 p-3">
-            <section className='flex flex-col gap-5 text-lg'>
-                <h1 className='text-2xl'>Breakeven Calculator</h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 sm:text-end'>
-                    <h1>Flat Brokerage Fees</h1>
+    useEffect(() => {
+        calculateBreakeven();
+    }, [numberOfContracts, contractPremium])
+
+    useEffect(() => {
+        calculateProfit();
+    }, [breakevenPremium, breakevenIncrease])
+
+    useEffect(() => {
+        calculateBudgetContracts();
+    }, [budgetAmount, budgetPremium])
+
+    return <div className="columns-1 md:columns-2 lg:columns-3 gap-10">
+        <div className="relative w-full h-min break-inside-avoid mb-10 rounded-2xl border border-[#2a2a30] bg-[#17171a] px-7 pb-6 pt-7 overflow-hidden shadow-[0_0_0_1px_#ffffff06,0_24px_64px_#00000060] animate-fade-up font-dm-sans">
+            <div className="flex items-center gap-2.5 mb-5">
+                <span className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">
+                    Brokerage Fees
+                </span>
+            </div>
+            <div className="font-dm-mono flex flex-col gap-2">
+                <div className="flex justify-between">
+                    <h1>Flat Brokerage Fee</h1>
                     <input
                         type="number"
                         min={0}
                         value={brokerageFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setBrokerageFee(parseFloat(e.target.value))}
                     />
-                    <h1>Per Contract Brokerage Fees</h1>
+                </div>
+                <div className="flex justify-between">
+                    <h1>Per Contract Fee</h1>
                     <input
                         type="number"
                         min={0}
                         value={contractFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setContractFee(parseFloat(e.target.value))}
                     />
-                    <h1>Number of Contracts Bought</h1>
+                </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#66bb6a] to-[#26c6da]" />
+        </div>
+        <div className="relative w-full h-min break-inside-avoid mb-10 rounded-2xl border border-[#2a2a30] bg-[#17171a] px-7 pb-6 pt-7 overflow-hidden shadow-[0_0_0_1px_#ffffff06,0_24px_64px_#00000060] animate-fade-up font-dm-sans">
+            <div className="flex items-center gap-2.5 mb-5">
+                <span className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">
+                    Return Calculator
+                </span>
+            </div>
+            <div className="font-dm-mono flex flex-col gap-2">
+                <div className="flex justify-between">
+                    <h1>Number of Contracts</h1>
                     <input
                         type="number"
                         min={0}
                         value={numberOfContracts}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setNumberOfContracts(parseInt(e.target.value))}
                     />
+                </div>
+                <div className="flex justify-between">
                     <h1>Contract Premium</h1>
                     <input
                         type="number"
                         min={0}
                         value={contractPremium}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setContractPremium(parseFloat(e.target.value))}
                     />
                 </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                    <h1>Premium Increase Required</h1>
-                    <h1 className='text-green-600 font-bold'>${breakevenIncrease.toFixed(4)}</h1>
-                </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
+            </div>
+            <div className="flex items-center gap-2.5 my-5">
+                <span className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">
+                    Breakeven
+                </span>
+            </div>
+            <div className="font-dm-mono flex flex-col gap-2">
+                <div className="flex justify-between">
                     <h1>Breakeven Premium</h1>
-                    <h1 className='text-green-600 font-bold'>${breakevenPremium.toFixed(4)}</h1>
+                    <h1>${breakevenPremium.toFixed(4)}</h1>
                 </div>
-                <button
-                    className='rounded-lg px-5 py-1 border border-fuchsia-700 hover:bg-fuchsia-700 hover:bg-opacity-20 hover:drop-shadow-button'
-                    onClick={calculateBreakeven}
-                >
-                    Calculate
-                </button>
-            </section>
-
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex flex-col gap-5 text-lg'>
-                <h1 className='text-2xl'>Profit Calculator</h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-5 sm:text-end'>
-                    <h1>Breakeven Premium</h1>
-                    <input
-                        type="number"
-                        min={0}
-                        value={saleBreakevenPremium}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                        onChange={(e) => setSaleBreakevenPremium(parseFloat(e.target.value))}
-                    />
-                    <h1>Desired Sale Premium</h1>
+                <div className="flex justify-between">
+                    <h1>Required Increase</h1>
+                    <h1>${breakevenIncrease.toFixed(4)}</h1>
+                </div>
+            </div>
+            <div className="flex items-center gap-2.5 my-5">
+                <span className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">
+                    Profit
+                </span>
+            </div>
+            <div className="font-dm-mono flex flex-col gap-2">
+                <div className="flex justify-between">
+                    <h1>Sale Premium</h1>
                     <input
                         type="number"
                         min={0}
                         value={salePremium}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setSalePremium(parseFloat(e.target.value))}
                     />
                 </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
+                <div className="flex justify-between">
                     <h1>P/L Dollar Amount</h1>
-                    <h1 className={`${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'} font-bold`}>${profitLoss.toFixed(2)}</h1>
+                    <h1 className={profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}>${profitLoss.toFixed(2)}</h1>
                 </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
+                <div className="flex justify-between">
                     <h1>P/L Percentage</h1>
-                    <h1 className={`${profitLoss >= 0 ? 'text-green-600' : 'text-red-600'} font-bold`}>{percentProfit.toFixed(2)}%</h1>
+                    <h1 className={profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}>{percentProfit.toFixed(2)}%</h1>
                 </div>
-                <button
-                    className='rounded-lg px-5 py-1 border border-fuchsia-700 hover:bg-fuchsia-700 hover:bg-opacity-20 hover:drop-shadow-button'
-                    onClick={calculateProfit}
-                >
-                    Calculate
-                </button>
-            </section>
-
-            <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex flex-col gap-5 text-lg'>
-                <h1 className='text-2xl'>Volume Calculator</h1>
-                <div>
-                {/* <div className='flex gap-2 justify-center'> */}
-                    <h1 className='inline'>How many contracts can I buy with</h1>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#66bb6a] to-[#26c6da]" />
+        </div>
+        <div className="relative w-full h-min break-inside-avoid mb-10 rounded-2xl border border-[#2a2a30] bg-[#17171a] px-7 pb-6 pt-7 overflow-hidden shadow-[0_0_0_1px_#ffffff06,0_24px_64px_#00000060] animate-fade-up font-dm-sans">
+            <div className="flex items-center gap-2.5 mb-5">
+                <span className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]">
+                    Volume Calculator
+                </span>
+            </div>
+            <div className="font-dm-mono flex flex-col gap-2">
+                <div className="flex justify-between">
+                    <h1>Capital</h1>
                     <input
                         type="number"
                         min={0}
                         value={budgetAmount}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none inline ml-2"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setBudgetAmount(parseFloat(e.target.value))}
                     />
-                    <h1 className='inline ml-2'>at a premium of</h1>
+                </div>
+                <div className="flex justify-between">
+                    <h1>Contract Premium</h1>
                     <input
                         type="number"
                         min={0}
                         value={budgetPremium}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none inline ml-2"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setBudgetPremium(parseFloat(e.target.value))}
-                    />
-                    <h1 className='inline ml-2'>?</h1>
-                </div>
-                <div className='grid grid-cols-1 sm:grid-cols-2 sm:gap-5 sm:text-end'>
-                    <h1>Flat Brokerage Fees</h1>
-                    <input
-                        type="number"
-                        min={0}
-                        value={brokerageFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                        onChange={(e) => setBrokerageFee(parseFloat(e.target.value))}
-                    />
-                    <h1>Per Contract Brokerage Fees</h1>
-                    <input
-                        type="number"
-                        min={0}
-                        value={contractFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                        onChange={(e) => setContractFee(parseFloat(e.target.value))}
                     />
                 </div>
                 <div>
-                    <h1 className='inline ml-2'>${budgetAmount} can buy</h1>
-                    <h1 className='text-green-600 inline ml-2'>{budgetContracts}</h1>
-                    <h1 className='inline ml-2'>contracts. </h1>
-                    <h1 className='inline'>It will cost</h1>
-                    <h1 className='text-green-600 inline ml-2'>${(brokerageFee + (contractFee * budgetContracts)).toFixed(2)}</h1>
-                    <h1 className='inline ml-2'>in fees, and</h1>
-                    <h1 className='text-green-600 inline ml-2'>${(budgetPremium * 100 * budgetContracts).toFixed(2)}</h1>
-                    <h1 className='inline ml-2'>in premiums to open this trade. Giving</h1>
-                    <h1 className='text-green-600 inline ml-2'>${(brokerageFee + (contractFee * budgetContracts) + (budgetPremium * 100 * budgetContracts)).toFixed(2)}</h1>
-                    <h1 className='inline ml-2'>in initial costs.</h1>
+                    <p className="inline text-[#26c6da]">${budgetAmount}</p>
+                    <p className="inline"> can buy </p>
+                    <p className="inline text-[#26c6da]">{budgetContracts}</p>
+                    <p className="inline"> contracts at a premium of </p>
+                    <p className="inline text-[#26c6da]">${budgetPremium}</p>
+                    <p className="inline">. It will cost </p>
+                    <p className="inline text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts)).toFixed(2)}</p>
+                    <p className="inline"> in fees, and </p>
+                    <p className="inline text-[#26c6da]">${(budgetPremium * 100 * budgetContracts).toFixed(2)}</p>
+                    <p className="inline"> in premiums. The total cost to open the position will be </p>
+                    <p className="inline text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts) + (budgetPremium * 100 * budgetContracts)).toFixed(2)}</p>
+                    <p className="inline">.</p>
                 </div>
-                <button
-                    className='rounded-lg px-5 py-1 border border-fuchsia-700 hover:bg-fuchsia-700 hover:bg-opacity-20 hover:drop-shadow-button'
-                    onClick={calculateBudgetContracts}
-                >
-                    Calculate
-                </button>
-            </section>
-
-            {/* <section className='border-t-2 border-zinc-500 mt-5 pt-2 flex flex-col gap-5 text-lg'>
-                <h1 className='text-2xl'>Spread Calculator</h1>
-                <div className='grid grid-cols-1 sm:grid-cols-2 sm:gap-5 sm:text-end'>
-                    <h1>Flat Brokerage Fees</h1>
-                    <input
-                        type="number"
-                        min={0}
-                        value={brokerageFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                        onChange={(e) => setBrokerageFee(parseFloat(e.target.value))}
-                    />
-                    <h1>Per Contract Brokerage Fees</h1>
-                    <input
-                        type="number"
-                        min={0}
-                        value={contractFee}
-                        className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                        onChange={(e) => setContractFee(parseFloat(e.target.value))}
-                    />
-                </div>
-                <div className='grid grid-cols-2'>
-                    <div className='flex flex-col gap-3'>
-                        <h1>Calls</h1>
-                        <div className='flex justify-center gap-5'>
-                            <h2>Number of contracts</h2>
-                            <input
-                                type="number"
-                                min={0}
-                                value={numCalls}
-                                className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                                onChange={(e) => setNumCalls(parseFloat(e.target.value))}
-                            />
-                        </div>
-                        <div className='flex justify-center gap-5'>
-                            <h2>Contract Premium</h2>
-                            <input
-                                type="number"
-                                min={0}
-                                value={callPremium}
-                                className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                                onChange={(e) => setCallPremium(parseFloat(e.target.value))}
-                            />
-                        </div>
-                        <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                            <h1>Cost of Calls</h1>
-                            <h1 className='text-red-600 font-bold'>${costOfCalls.toFixed(2)}</h1>
-                        </div>
-                        <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                            <h1>Call Fees</h1>
-                            <h1 className='text-red-600 font-bold'>${callFees.toFixed(2)}</h1>
-                        </div>
-                    </div>
-                    <div className='flex flex-col gap-3'>
-                        <h1>Puts</h1>
-                        <div className='flex justify-center gap-5'>
-                            <h2>Number of contracts</h2>
-                            <input
-                                type="number"
-                                min={0}
-                                value={numPuts}
-                                className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                                onChange={(e) => setNumPuts(parseFloat(e.target.value))}
-                            />
-                        </div>
-                        <div className='flex justify-center gap-5'>
-                            <h2>Contract Premium</h2>
-                            <input
-                                type="number"
-                                min={0}
-                                value={putPremium}
-                                className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                                onChange={(e) => setPutPremium(parseFloat(e.target.value))}
-                            />
-                        </div>
-                        <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                            <h1>Cost of Puts</h1>
-                            <h1 className='text-red-600 font-bold'>${costOfPuts.toFixed(2)}</h1>
-                        </div>
-                        <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                            <h1>Put Fees</h1>
-                            <h1 className='text-red-600 font-bold'>${putFees.toFixed(2)}</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className='flex flex-col gap-3'>
-                    <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                        <h1>Total Cost</h1>
-                        <h1 className='text-red-600 font-bold'>${(costOfCalls + costOfPuts).toFixed(2)}</h1>
-                    </div>
-                    <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                        <h1>Total Fees</h1>
-                        <h1 className='text-red-600 font-bold'>${(callFees + putFees).toFixed(2)}</h1>
-                    </div>
-                    <div className='flex justify-center gap-3'>
-                        <h1>Winner</h1>
-                        <select
-                            name="spreadWinner"
-                            id="spreadWinner"
-                            value={spreadWinner}
-                            onChange={(e) => setSpreadWinner(e.target.value)}
-                            className='px-1 rounded bg-fuchsia-900'
-                        >
-                            <option value="calls" >calls</option>
-                            <option value="puts" >puts</option>
-                        </select>
-                    </div>
-                    <div className='flex justify-center gap-3'>
-                        <h1>Sale Premium</h1>
-                            <input
-                                type="number"
-                                min={0}
-                                value={spreadSalePremium}
-                                className="pl-1 w-32 bg-fuchsia-700 bg-opacity-50 rounded outline-none m-auto sm:m-0"
-                                onChange={(e) => setSpreadSalePremium(parseFloat(e.target.value))}
-                            />
-                    </div>
-                </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                    <h1>Total Sale After Closing Fees</h1>
-                    <h1 className={`${spreadSaleTotal >= 0 ? 'text-green-600' : 'text-red-600'} font-bold`}>${spreadSaleTotal.toFixed(2)}</h1>
-                </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                    <h1>P/L Dollar Amount</h1>
-                    <h1 className={`${spreadReturnDollar >= 0 ? 'text-green-600' : 'text-red-600'} font-bold`}>${spreadReturnDollar.toFixed(2)}</h1>
-                </div>
-                <div className='flex flex-col sm:flex-row sm:gap-3 justify-center'>
-                    <h1>P/L Percentage</h1>
-                    <h1 className={`${spreadReturnDollar >= 0 ? 'text-green-600' : 'text-red-600'} font-bold`}>{spreadReturnPercent.toFixed(2)}%</h1>
-                </div>
-                <button
-                    className='rounded-lg px-5 py-1 border border-fuchsia-700 hover:bg-fuchsia-700 hover:bg-opacity-20 hover:drop-shadow-button'
-                    onClick={calculateSpread}
-                >
-                    Calculate
-                </button>
-            </section> */}
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#66bb6a] to-[#26c6da]" />
         </div>
     </div>
 }
