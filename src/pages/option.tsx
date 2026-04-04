@@ -163,11 +163,11 @@ function OptionModule () {
                 </div>
                 <div className="flex justify-between">
                     <h1>P/L Dollar Amount</h1>
-                    <h1 className={profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}>${profitLoss.toFixed(2)}</h1>
+                    <h1 className={`text-[20px] font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>${profitLoss.toFixed(2)}</h1>
                 </div>
                 <div className="flex justify-between">
                     <h1>P/L Percentage</h1>
-                    <h1 className={profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}>{percentProfit.toFixed(2)}%</h1>
+                    <h1 className={`text-[20px] font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>{percentProfit.toFixed(2)}%</h1>
                 </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#66bb6a] to-[#26c6da]" />
