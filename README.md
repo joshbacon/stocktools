@@ -1,7 +1,11 @@
+<div align="center">
+  <a href="https://github.com/joshbacon/RAM">
+    <img src="src/assets/icon.ico" alt="Logo" width="72" height="72">
+  </a>
 
-<div style="display:flex; justify-content:space-between; align-items: center; margin-bottom:20px;">
-  <p style="font-size:30px; font-weight:bold">Stock Tools</p>
-  <img src="src/assets/icon.ico" width="64" />
+  <h2 align="center">
+    <b>Stock Tools</b>
+  </h2>
 </div>
 
 
