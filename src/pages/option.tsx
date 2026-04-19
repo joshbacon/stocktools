@@ -78,14 +78,14 @@ function OptionModule () {
                     Brokerage Fees
                 </span>
             </div>
-            <div className="font-dm-mono flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                     <h1>Flat Brokerage Fee</h1>
                     <input
                         type="number"
                         min={0}
                         value={brokerageFee}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-dm-mono"
                         onChange={(e) => setBrokerageFee(parseFloat(e.target.value))}
                     />
                 </div>
@@ -95,7 +95,7 @@ function OptionModule () {
                         type="number"
                         min={0}
                         value={contractFee}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none font-dm-mono"
                         onChange={(e) => setContractFee(parseFloat(e.target.value))}
                     />
                 </div>
@@ -108,14 +108,14 @@ function OptionModule () {
                     Return Calculator
                 </span>
             </div>
-            <div className="font-dm-mono flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                     <h1>Number of Contracts</h1>
                     <input
                         type="number"
                         min={0}
                         value={numberOfContracts}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none font-dm-mono tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setNumberOfContracts(parseInt(e.target.value))}
                     />
                 </div>
@@ -125,7 +125,7 @@ function OptionModule () {
                         type="number"
                         min={0}
                         value={contractPremium}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none font-dm-mono tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setContractPremium(parseFloat(e.target.value))}
                     />
                 </div>
@@ -135,14 +135,14 @@ function OptionModule () {
                     Breakeven
                 </span>
             </div>
-            <div className="font-dm-mono flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                     <h1>Breakeven Premium</h1>
-                    <h1>${breakevenPremium.toFixed(4)}</h1>
+                    <h1 className="font-dm-mono">${breakevenPremium.toFixed(4)}</h1>
                 </div>
                 <div className="flex justify-between">
                     <h1>Required Increase</h1>
-                    <h1>${breakevenIncrease.toFixed(4)}</h1>
+                    <h1 className="font-dm-mono">${breakevenIncrease.toFixed(4)}</h1>
                 </div>
             </div>
             <div className="flex items-center gap-2.5 my-5">
@@ -150,7 +150,7 @@ function OptionModule () {
                     Profit
                 </span>
             </div>
-            <div className="font-dm-mono flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                     <h1>Sale Premium</h1>
                     <input
@@ -163,11 +163,11 @@ function OptionModule () {
                 </div>
                 <div className="flex justify-between">
                     <h1>P/L Dollar Amount</h1>
-                    <h1 className={`text-[20px] font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>${profitLoss.toFixed(2)}</h1>
+                    <h1 className={`text-[20px] font-dm-mono font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>${profitLoss.toFixed(2)}</h1>
                 </div>
                 <div className="flex justify-between">
                     <h1>P/L Percentage</h1>
-                    <h1 className={`text-[20px] font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>{percentProfit.toFixed(2)}%</h1>
+                    <h1 className={`text-[20px] font-dm-mono font-medium ${profitLoss >= 0 ? 'text-green-600' : 'text-[#be123c]'}`}>{percentProfit.toFixed(2)}%</h1>
                 </div>
             </div>
             <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-[#66bb6a] to-[#26c6da]" />
@@ -178,14 +178,14 @@ function OptionModule () {
                     Volume Calculator
                 </span>
             </div>
-            <div className="font-dm-mono flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <div className="flex justify-between">
                     <h1>Capital</h1>
                     <input
                         type="number"
                         min={0}
                         value={budgetAmount}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none font-dm-mono tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setBudgetAmount(parseFloat(e.target.value))}
                     />
                 </div>
@@ -195,22 +195,22 @@ function OptionModule () {
                         type="number"
                         min={0}
                         value={budgetPremium}
-                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        className="pl-1 w-24 bg-[#242424] text-center rounded outline-none font-dm-mono tracking-tight [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         onChange={(e) => setBudgetPremium(parseFloat(e.target.value))}
                     />
                 </div>
                 <div>
-                    <p className="inline text-[#26c6da]">${budgetAmount}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">${budgetAmount}</p>
                     <p className="inline"> can buy </p>
-                    <p className="inline text-[#26c6da]">{budgetContracts}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">{budgetContracts}</p>
                     <p className="inline"> contracts at a premium of </p>
-                    <p className="inline text-[#26c6da]">${budgetPremium}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">${budgetPremium}</p>
                     <p className="inline">. It will cost </p>
-                    <p className="inline text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts)).toFixed(2)}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts)).toFixed(2)}</p>
                     <p className="inline"> in fees, and </p>
-                    <p className="inline text-[#26c6da]">${(budgetPremium * 100 * budgetContracts).toFixed(2)}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">${(budgetPremium * 100 * budgetContracts).toFixed(2)}</p>
                     <p className="inline"> in premiums. The total cost to open the position will be </p>
-                    <p className="inline text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts) + (budgetPremium * 100 * budgetContracts)).toFixed(2)}</p>
+                    <p className="inline font-dm-mono text-[#26c6da]">${(brokerageFee + (contractFee * budgetContracts) + (budgetPremium * 100 * budgetContracts)).toFixed(2)}</p>
                     <p className="inline">.</p>
                 </div>
             </div>
