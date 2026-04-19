@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DividendModule from './pages/dividend';
 import PaperModule from './pages/paper';
 import OptionModule from './pages/option';
@@ -21,6 +21,11 @@ function App() {
 
   const [selected, setSelected] = useState<Page>(pages[1]);
   const [navOpen, setNavOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const lastPage =+document.cookie.split("=")[1];
+    setSelected(pages[isNaN(lastPage) ? 1 : lastPage]);
+  }, []);
 
   function renderSection() {
     return selected.module;
@@ -48,13 +53,13 @@ function App() {
         </div>
         <div className={`flex flex-col items-end ${navOpen ? '' : 'hidden'}`}>
           { pages.map((page) => {
-            console.log(page);
             if (page.id != selected.id)
               return <div
                 key={page.id}
                 className="cursor-pointer text-[30px] font-medium hover:text-[#26c6da]"
                 onClick={() => {
-                  setSelected(page)
+                  setSelected(page);
+                  document.cookie = "lastPage="+page.id
                   setNavOpen(false);
                 }}
               >

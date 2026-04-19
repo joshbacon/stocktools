@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import TickerData from "../components/TickerData";
 import StatCard from "../components/StatCard";
 
 function PaperModule () {
-
-    interface TickerData {
-        ticker: string,
-        name: string,
-        numShares: number,
-        price: number,
-        avgCost: number,
-        found: boolean
-    }
 
     const emptyTicker:TickerData = {
         ticker: "",
@@ -19,6 +11,8 @@ function PaperModule () {
         numShares: 0,
         price: 0,
         avgCost: 0,
+        yield: 0,
+        monthly: false,
         found: false
     }
 
@@ -77,6 +71,7 @@ function PaperModule () {
         let temp = [...tickerList];
         temp.splice(key, 1);
         setTickerList(temp);
+        updateTotals(temp);
     }
 
     // API call to get ticker data
@@ -141,6 +136,41 @@ function PaperModule () {
         
         // Save updated ticker list to local storage
         localStorage.setItem("growthTickerList", JSON.stringify(recentList));
+    }
+
+    // Sync List with Growth Page
+    function syncList() {
+        const divStorage:string|null = localStorage.getItem("tickerList");
+        const growthStorage:string|null = localStorage.getItem("growthTickerList");
+        if ((!divStorage || divStorage == "[]") && growthStorage) {
+            // fill the empty growth list with the div list
+            localStorage.setItem("tickerList", JSON.stringify(tickerList));
+        } else if (divStorage && (!growthStorage || growthStorage == "[]")) {
+            // empty out the growth list
+            localStorage.setItem("tickerList", JSON.stringify([]));
+        } else if (divStorage && growthStorage) {
+            let divTickers:Map<String, TickerData> = new Map(JSON.parse(divStorage).map((t:TickerData) => [t.ticker, t]));
+            const growthTickers:Map<String, TickerData> = new Map(JSON.parse(growthStorage).map((t:TickerData) => [t.ticker, t]));
+            // remove any that aren't in the dividend list
+            for (const [key, _] of divTickers) {
+                if (!growthTickers.has(key)) {
+                    divTickers.delete(key);
+                }
+            }
+            // add any that aren't in the growth list
+            for (const [key, value] of growthTickers) {
+                if (!divTickers.has(key)) {
+                    divTickers.set(key, value);
+                }
+            }
+            // set growth list to updated version
+            let result:TickerData[] = [];
+            for (const [_, value] of divTickers) {
+                if (value != undefined)
+                result.push(value);
+            }
+            localStorage.setItem("tickerList", JSON.stringify(result));
+        }
     }
 
     // Drip Calculation list item component
@@ -268,6 +298,18 @@ function PaperModule () {
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div
+            className="cursor-pointer relative w-70 rounded-2xl border border-[#2a2a30] bg-[#17171a] px-7 pb-6 pt-6 overflow-x-auto shadow-[0_0_0_1px_#ffffff06,0_24px_64px_#00000060] animate-fade-up font-dm-sans"
+            onClick={syncList}
+        >
+            <h1
+                className="font-medium"
+                title="This will copy the above list to the Dividend Tracking page.
+It will keep any average costs for matching tickers."
+            >
+                Sync List
+            </h1>
         </div>
     </div>
 }

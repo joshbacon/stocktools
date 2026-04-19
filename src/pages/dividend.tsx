@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import TickerData from "../components/TickerData";
 import StatCard from "../components/StatCard";
 
 function DividendModule () {
-
-    interface TickerData {
-        ticker: string,
-        name: string,
-        numShares: number,
-        price: number,
-        yield: number,
-        monthly: boolean,
-        found: boolean
-    }
 
     const emptyTicker:TickerData = {
         ticker: "",
         name: "",
         numShares: 0,
         price: 0,
+        avgCost: 0,
         yield: 0,
         monthly: false,
         found: false
@@ -170,6 +162,41 @@ function DividendModule () {
         minimumFractionDigits: 2,
     });
 
+    // Sync List with Growth Page
+    function syncList() {
+        const growthStorage:string|null = localStorage.getItem("growthTickerList");
+        const divStorage:string|null = localStorage.getItem("tickerList");
+        if ((!growthStorage || growthStorage == "[]") && divStorage) {
+            // fill the empty growth list with the div list
+            localStorage.setItem("growthTickerList", JSON.stringify(tickerList));
+        } else if (growthStorage && (!divStorage || divStorage == "[]")) {
+            // empty out the growth list
+            localStorage.setItem("growthTickerList", JSON.stringify([]));
+        } else if (growthStorage && divStorage) {
+            let growthTickers:Map<String, TickerData> = new Map(JSON.parse(growthStorage).map((t:TickerData) => [t.ticker, t]));
+            const divTickers:Map<String, TickerData> = new Map(JSON.parse(divStorage).map((t:TickerData) => [t.ticker, t]));
+            // remove any that aren't in the dividend list
+            for (const [key, _] of growthTickers) {
+                if (!divTickers.has(key)) {
+                    growthTickers.delete(key);
+                }
+            }
+            // add any that aren't in the growth list
+            for (const [key, value] of divTickers) {
+                if (!growthTickers.has(key)) {
+                    growthTickers.set(key, value);
+                }
+            }
+            // set growth list to updated version
+            let result:TickerData[] = [];
+            for (const [_, value] of growthTickers) {
+                if (value != undefined)
+                result.push(value);
+            }
+            localStorage.setItem("growthTickerList", JSON.stringify(result));
+        }
+    }
+
 
     // Drip Calculation list item component
     function dripItem(tickerData:TickerData, key:number) {
@@ -312,6 +339,18 @@ Percentage represents how close you are to another share"
                     <h2 className="text-2xl font-dm-mono font-medium text-[#f0f0f5] tracking-tight">{currencyFormatter.format(total/525960)}</h2>
                 </div>
             </div>
+        </div>
+        <div
+            className="cursor-pointer relative w-70 rounded-2xl border border-[#2a2a30] bg-[#17171a] px-7 pb-6 pt-6 overflow-x-auto shadow-[0_0_0_1px_#ffffff06,0_24px_64px_#00000060] animate-fade-up font-dm-sans"
+            onClick={syncList}
+        >
+            <h1
+                className="font-medium"
+                title="This will copy the above list to the Growth Tracking page.
+It will keep any average costs for matching tickers."
+            >
+                Sync List
+            </h1>
         </div>
     </div>
 }
