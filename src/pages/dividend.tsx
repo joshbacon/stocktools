@@ -66,8 +66,7 @@ function DividendModule () {
 
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
-        // let tickerPath = "localhost:9001/dividend?ticker=" + ticker;
-        let tickerPath = "http://172.105.104.89:9001/dividend?ticker=" + ticker;
+        let tickerPath = "https://joshbacon.ca/api/listaccounts/?ticker=" + ticker;
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }
@@ -181,10 +180,16 @@ function DividendModule () {
                     growthTickers.delete(key);
                 }
             }
-            // add any that aren't in the growth list
             for (const [key, value] of divTickers) {
+                // add any that aren't in the growth list
                 if (!growthTickers.has(key)) {
                     growthTickers.set(key, value);
+                } else { // update num shares on existing ones
+                    let temp:TickerData|undefined = growthTickers.get(key);
+                    if (temp) {
+                        temp.numShares = value.numShares;
+                        growthTickers.set(key, temp);
+                    }
                 }
             }
             // set growth list to updated version
