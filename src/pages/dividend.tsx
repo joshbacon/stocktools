@@ -66,7 +66,7 @@ function DividendModule () {
 
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
-        let tickerPath = "https://joshbacon.ca/api/listaccounts/?ticker=" + ticker;
+        let tickerPath = "https://joshbacon.ca/api/dividend/?ticker=" + ticker;
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }

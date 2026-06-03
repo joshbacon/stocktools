@@ -76,7 +76,7 @@ function PaperModule () {
 
     // API call to get ticker data
     async function getTickerData(ticker:string) : Promise<TickerData> {
-        let tickerPath = "https://joshbacon.ca/api/listaccounts/?ticker=" + ticker;
+        let tickerPath = "https://joshbacon.ca/api/dividend/?ticker=" + ticker;
         let data:TickerData = (await axios.get(tickerPath)).data;
         return data;
     }
@@ -261,7 +261,7 @@ function PaperModule () {
                         <th
                             className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"
                             title="Enter your average cost per share here"
-                        > Cost
+                        > Average Cost
                         </th>
                         <th
                             className="text-[13.5px] font-normal uppercase tracking-[0.04em] text-[#9696a0]"

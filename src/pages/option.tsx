@@ -65,7 +65,7 @@ function OptionModule () {
 
     useEffect(() => {
         calculateProfit();
-    }, [breakevenPremium, breakevenIncrease])
+    }, [breakevenPremium, breakevenIncrease, salePremium])
 
     useEffect(() => {
         calculateBudgetContracts();
